@@ -75,6 +75,7 @@ h1.lt{font-size:34px;font-weight:800;letter-spacing:-.022em;line-height:1.08;mar
 .btn.dng{color:var(--red)}
 .btn.s2{background:var(--s2)}
 .btn:disabled{opacity:.35;transform:none}
+#sh .btn:not(.pri):not(.ok){background:var(--s2)}
 .ban{display:flex;gap:12px;align-items:center;background:rgba(255,214,10,.12);border-radius:16px;padding:12px 14px;margin-bottom:12px;font-size:14.5px;line-height:1.38}
 .ban span{flex:1}
 .ban b{color:var(--yellow)}
@@ -192,6 +193,26 @@ h1.lt{font-size:34px;font-weight:800;letter-spacing:-.022em;line-height:1.08;mar
 .res .m3 div{background:rgba(255,255,255,.07)}
 .res .x{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;color:var(--tx2)}
 .res .x svg{width:14px;height:14px}
+
+/* ───── arsenal y cambios ───── */
+.camb{display:inline-block;margin-top:4px;font-size:12.5px;font-weight:600;color:var(--purple)}
+.srch{width:100%;background:var(--s2);border:0;outline:0;border-radius:12px;padding:11px 14px;font-size:16px;color:var(--tx);margin-bottom:10px}
+.gch{display:flex;gap:7px;overflow-x:auto;margin:0 -18px 12px;padding:0 18px;scrollbar-width:none}
+.gch::-webkit-scrollbar{display:none}
+.gch button{flex:0 0 auto;padding:7px 12px;border-radius:999px;background:var(--s2);font-size:14px;font-weight:600;color:var(--tx2)}
+.gch button.on{background:var(--tx);color:#000}
+.lh{font-size:12.5px;font-weight:700;color:var(--tx2);text-transform:uppercase;letter-spacing:.04em;margin:14px 4px 7px}
+.ars{background:var(--s2);border-radius:15px;overflow:hidden}
+.ars button{display:flex;align-items:center;gap:12px;width:100%;padding:8px 12px;position:relative}
+.ars button+button::before{content:"";position:absolute;top:0;left:68px;right:0;border-top:.5px solid var(--sep)}
+.ars button:active{background:var(--s3)}
+.ars img,.ars .ni{width:44px;height:44px;border-radius:10px;object-fit:cover;background:var(--s3);flex:0 0 44px}
+.ars .ni{display:grid;place-items:center;color:var(--tx3);font-size:18px}
+.ars .tx{flex:1;min-width:0}
+.ars .tx b{display:block;font-size:15.5px;font-weight:500;line-height:1.25}
+.ars .tx small{color:var(--tx2);font-size:12.5px}
+.vol{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:14px;background:rgba(191,90,242,.14);color:var(--purple);font-weight:600;margin-bottom:12px;font-size:15px}
+.ta2{width:100%;min-height:84px;background:var(--s3);border:0;outline:0;border-radius:11px;padding:11px 12px;font-size:15px;color:var(--tx);resize:none}
 
 /* ───── timer ───── */
 #timer{position:fixed;left:16px;right:16px;bottom:calc(var(--tabh) + var(--sb) + 10px);max-width:480px;margin:0 auto;z-index:45;
@@ -327,6 +348,7 @@ h1.lt{font-size:34px;font-weight:800;letter-spacing:-.022em;line-height:1.08;mar
 <nav id="tabs"></nav>
 <div id="probe" style="position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-top,0px);visibility:hidden;pointer-events:none"></div>
 
+<script src="arsenal.js"></script>
 <script>
 "use strict";
 /* ════════════════════════════════════════════════════════════════════════
@@ -369,34 +391,6 @@ const RUTINA={
   {n:"Elevación de piernas en banco",s:3,r:"12",p:"peso corporal",d:45,c:"Manos bajo el glúteo, espalda baja pegada al banco. Sube las piernas hasta 90° y baja despacio sin tocar el piso."}]}
 };
 
-/* GUÍA VISUAL — fotos de free-exercise-db (Unlicense), reducidas y servidas desde ej/.
-   i = id del ejercicio allá · q = búsqueda en YouTube · uno = solo la foto final · nota = aviso si la foto no calza exacto.
-   Revisadas a ojo el 6-oct contra las máquinas del Coliseum. */
-const GUIA={
- "Press banca plano (barra)":{i:"Barbell_Bench_Press_-_Medium_Grip",q:"press banca plano con barra"},
- "Press de hombro (máquina)":{i:"Leverage_Shoulder_Press",q:"press de hombro en maquina convergente"},
- "Pec deck":{i:"Butterfly",q:"pec deck aperturas en maquina"},
- "Pushdown (barra)":{i:"Triceps_Pushdown",q:"jalon de triceps en polea con barra"},
- "Elevaciones laterales":{i:"Side_Lateral_Raise",q:"elevaciones laterales con mancuernas"},
- "Remo con apoyo de pecho":{i:"Leverage_Iso_Row",q:"remo con apoyo de pecho en maquina"},
- "Jalón al pecho, agarre ancho":{i:"Wide-Grip_Lat_Pulldown",q:"jalon al pecho agarre ancho"},
- "Reverse fly (máquina)":{i:"Reverse_Machine_Flyes",q:"reverse fly en maquina deltoides posterior"},
- "Curl de bíceps (mancuernas)":{i:"Dumbbell_Bicep_Curl",q:"curl de biceps con mancuernas"},
- "Encogimientos de trapecio":{i:"Dumbbell_Shrug",q:"encogimientos de trapecio con mancuernas"},
- "Leg press":{i:"Leg_Press",q:"prensa de piernas leg press"},
- "RDL con mancuernas":{i:"Stiff-Legged_Dumbbell_Deadlift",q:"peso muerto rumano con mancuernas",nota:"En la foto baja un poco más de lo necesario. Para cuando sientas el isquio estirado, con la espalda recta."},
- "Sentadilla goblet":{i:"Goblet_Squat",q:"sentadilla goblet"},
- "Leg curl acostado":{i:"Lying_Leg_Curls",q:"curl femoral acostado en maquina"},
- "Extensión de cuádriceps":{i:"Leg_Extensions",q:"extension de cuadriceps en maquina"},
- "Elevación de talones en leg press":{i:"Calf_Press_On_The_Leg_Press_Machine",q:"pantorrillas en prensa de piernas"},
- "Plancha":{i:"Plank",q:"plancha abdominal tecnica",uno:1},
- "Press inclinado (mancuernas)":{i:"Incline_Dumbbell_Press",q:"press inclinado con mancuernas"},
- "Elevaciones frontales":{i:"Front_Dumbbell_Raise",q:"elevaciones frontales con mancuernas"},
- "Extensión de tríceps sobre cabeza":{i:"Cable_Rope_Overhead_Triceps_Extension",q:"extension de triceps sobre la cabeza",nota:"La foto es en polea con cuerda. Con mancuerna es el mismo movimiento: codos fijos apuntando al techo."},
- "Curl martillo":{i:"Hammer_Curls",q:"curl martillo con mancuernas"},
- "Patada de tríceps (polea)":{i:"Tricep_Dumbbell_Kickback",q:"patada de triceps en polea",nota:"La foto es con mancuerna. En polea va igual: torso inclinado, codo alto y quieto, solo se mueve el antebrazo."},
- "Elevación de piernas en banco":{i:"Flat_Bench_Lying_Leg_Raise",q:"elevacion de piernas acostado en banco"}
-};
 
 /* ════════════════════════════════════════════════════════════════════════
    ALIMENTOS — por 100 g (o 100 ml): k kcal · p proteína · c carbos · f grasa.
@@ -522,12 +516,14 @@ const IC={
  play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8c1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8zM10 15V9l5.2 3z"/></svg>',
  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
  cinta:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v6H3z"/><path d="M7 9v3M11 9v2M15 9v3M19 9v2"/></svg>',
+ cambio:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4L3.5 7.5 7 11M3.5 7.5H17M17 13l3.5 3.5L17 20M20.5 16.5H7"/></svg>',
+ lista:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg>',
  bascula:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8.5 9a5 5 0 0 1 7 0M12 12l1.6-2.4"/></svg>'
 };
 
 /* ═══════════════ utilidades ═══════════════ */
 const $=s=>document.querySelector(s);
-const K={ses:"gym.sesiones",pes:"gym.pesos",com:"gym.comida",bw:"gym.peso",cfg:"gym.cfg",sup:"gym.supl",cus:"gym.custom",cin:"gym.cintura",rv:"gym.resumenVisto"};
+const K={ses:"gym.sesiones",pes:"gym.pesos",com:"gym.comida",bw:"gym.peso",cfg:"gym.cfg",sup:"gym.supl",cus:"gym.custom",cin:"gym.cintura",rv:"gym.resumenVisto",cam:"gym.cambios",ejc:"gym.ejercicios",niv:"gym.nivelEj"};
 const DB={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},
           set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){toast("No pude guardar. ¿Memoria llena?")}}};
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -657,14 +653,37 @@ function armarPeso(u,n){
   return fmtN(n)+(u==="lado"?" kg/lado":u==="cu"?" kg c/u":" kg");
 }
 function setPeso(n,v){const P=DB.get(K.pes,{});v=String(v).trim();if(v)P[n]=v;else delete P[n];DB.set(K.pes,P)}
+/* ═══════════════ arsenal y cambios de ejercicio ═══════════════
+   ARSENAL (arsenal.js) = ejercicios.md con sus cues + catálogo de free-exercise-db (cat:1).
+   Un cambio reemplaza el ejercicio de un hueco (día:posición) y conserva series, reps y descanso.
+   gym.cambios = {fijo:{"1:2":nombre}, hoy:{"2026-10-06:1:2":nombre}} */
+const GRUPOS=["Espalda","Pecho","Hombro","Bíceps","Tríceps","Cuádriceps","Isquio y glúteo","Gemelo","Core"];
+const NIV=[["x","Lo sé hacer"],["/","Sin dominar"],[" ","Por aprender"],["c","Catálogo"]];
+const arsenal=()=>ARSENAL.concat(DB.get(K.ejc,[]));
+const fichaDe=n=>arsenal().find(x=>x.n===n);
+const nivelDe=F=>{const v=DB.get(K.niv,{})[F.n];return v!=null?v:F.cat?"c":F.lv};
+const cambios=()=>{const C=DB.get(K.cam,{});C.fijo=C.fijo||{};C.hoy=C.hoy||{};return C};
+function rutinaDe(dia,f){
+  const r=RUTINA[dia];if(!r)return null;
+  const C=cambios(),s=DB.get(K.ses,{})[f];
+  return Object.assign({},r,{e:r.e.map((x,i)=>{
+    const kf=dia+":"+i,kh=f+":"+kf;let n=C.hoy[kh]||C.fijo[kf]||x.n;
+    const se=s&&s.dia===dia&&s.ej[i];
+    if(f<hoy()&&se&&se.hechas.length)n=se.n; // días pasados: lo que de verdad hizo
+    if(n===x.n)return Object.assign({},x,{o:x.n});
+    const F=fichaDe(n)||{n,c:""},enRut=Object.values(RUTINA).flatMap(d=>d.e).find(y=>y.n===n);
+    return Object.assign({},x,{n,c:F.c||"",p:F.p||(enRut?enRut.p:""),o:x.n,cam:C.hoy[kh]===n?"hoy":"fijo"});
+  })});
+}
+const R=()=>rutinaDe(entD,entF);
 const seriesTot=r=>r.e.reduce((a,x)=>a+x.s,0);
 const hechasSes=s=>s?s.ej.reduce((a,e)=>a+e.hechas.length,0):0;
 const entrenoEn=f=>{const s=DB.get(K.ses,{})[f];return!!(s&&hechasSes(s))};
 function marcar(f,dia,i,k){
-  const S=DB.get(K.ses,{}),r=RUTINA[dia];let s=S[f];
+  const S=DB.get(K.ses,{}),r=rutinaDe(dia,f);let s=S[f];
   if(!s||s.dia!==dia)s=S[f]={dia,t:r.t,ej:r.e.map(x=>({n:x.n,hechas:[],peso:null}))};
   while(s.ej.length<r.e.length)s.ej.push({n:r.e[s.ej.length].n,hechas:[],peso:null});
-  const e=s.ej[i];e.n=r.e[i].n;
+  const e=s.ej[i];if(e.n!==r.e[i].n){e.n=r.e[i].n;e.hechas=[]}e.meta=r.e[i].s;
   const on=!e.hechas.includes(k);
   e.hechas=on?e.hechas.concat(k).sort((a,b)=>a-b):e.hechas.filter(x=>x!==k);
   e.peso=pesoDe(r.e[i]);
@@ -698,8 +717,8 @@ function tocaSubir(ej,antes){
   const S=DB.get(K.ses,{}),ult=[];
   for(const f of Object.keys(S).filter(x=>x<antes).sort().reverse()){
     const s=S[f],r=RUTINA[s.dia],e=s.ej.find(x=>x.n===ej.n&&x.hechas.length);if(!e)continue;
-    const meta=r&&r.e.find(x=>x.n===ej.n);
-    ult.push({ok:!!meta&&e.hechas.length>=meta.s,p:normPeso(e.peso)});
+    const meta=e.meta||(r&&(r.e.find(x=>x.n===ej.n)||{}).s);
+    ult.push({ok:!!meta&&e.hechas.length>=meta,p:normPeso(e.peso)});
     if(ult.length===2)break;
   }
   if(ult.length<2||!ult.every(x=>x.ok&&x.p===pv))return null;
@@ -825,7 +844,7 @@ function anillo(r,w,fr,col){
 }
 function vHoy(){
   const f=hoy(),d=new Date(),H=d.getHours(),c=cfg(),m=metas(c),t=totDia(f);
-  const dia=d.getDay(),r=RUTINA[dia],s=DB.get(K.ses,{})[f];
+  const dia=d.getDay(),r=rutinaDe(dia,f),s=DB.get(K.ses,{})[f];
   const tot=r?seriesTot(r):0,hec=hechasSes(s),v=ventana();
   const saludo=H<12?"Buenos días":H<19?"Buenas tardes":"Buenas noches";
   let h='<div class="eyebrow">'+fechaLarga(f)+'</div><h1 class="lt">'+saludo+"</h1>";
@@ -899,7 +918,7 @@ function irEntrenoHoy(){entD=new Date().getDay();entF=hoy();ir("entreno")}
 function diaEnt(d){hap();entD=d;entF=addD(lunesDe(hoy()),d-1);render()}
 function vEntreno(){
   if(entD===null){entD=new Date().getDay();entF=hoy()}
-  const r=RUTINA[entD],S=DB.get(K.ses,{}),s=S[entF],lun=lunesDe(hoy()),futuro=entF>hoy();
+  const r=R(),S=DB.get(K.ses,{}),s=S[entF],lun=lunesDe(hoy()),futuro=entF>hoy();
   const seg=[1,2,3,4,5].map(d=>{const fd=addD(lun,d-1);return'<button class="'+(d===entD?"on":"")+'" onclick="diaEnt('+d+')">'+DC[d]+(entrenoEn(fd)?"<i></i>":"")+"</button>"}).join("");
   let h='<div class="eyebrow">'+(entF===hoy()?"Hoy · ":"")+fechaLarga(entF)+'</div><h1 class="lt">'+(r?esc(r.t):"Día libre")+'</h1><div class="seg">'+seg+"</div>";
   if(!r)return[h+'<div class="card empty">Sábado y domingo libres.<br>Elige un día arriba para ver o anotar esa sesión.</div>',"Entreno"];
@@ -907,15 +926,15 @@ function vEntreno(){
   h+='<div class="prog"><div class="pt"><span><b>'+hec+"</b> de "+tot+" series</span><span>"+r.min+' min</span></div><div class="bar"><i style="width:'+(hec/tot*100)+'%"></i></div></div>';
   if(futuro)h+='<div class="ban"><span><b>Ese día todavía no llega.</b> Puedes ver la rutina, no marcar series.</span></div>';
   h+=r.e.map((ej,i)=>{
-    const hs=s&&s.ej[i]?s.ej[i].hechas:[],done=hs.length>=ej.s,u=ultimaVez(ej.n,entF),pv=pesoDe(ej),corp=unidad(pv)==="corp";
+    const hs=s&&s.ej[i]&&s.ej[i].n===ej.n?s.ej[i].hechas:[],done=hs.length>=ej.s,u=ultimaVez(ej.n,entF),pv=pesoDe(ej),corp=unidad(pv)==="corp";
     const sb=!futuro&&!hs.length?tocaSubir(ej,entF):null;
     const sets=Array.from({length:ej.s},(_,k)=>{const on=hs.includes(k);
       return'<button class="set'+(on?" on":"")+'" id="s'+i+"_"+k+'" onclick="serie('+i+","+k+')"'+(futuro?" disabled":"")+">"+(on?IC.check:"<span>"+(k+1)+"</span>")+"<small>"+esc(ej.r)+(/s$/.test(ej.r)?"":" reps")+"</small></button>"}).join("");
-    return'<div class="ex'+(done?" done":"")+'"><div class="exh"><div class="badge">'+(done?IC.check:i+1)+'</div><div class="exn"><b>'+esc(ej.n)+"</b><small>"+ej.s+" × "+esc(ej.r)+" · descanso "+ej.d+' s</small></div><button class="ib" onclick="tecnica('+i+')">'+IC.info+"</button></div>"+
+    return'<div class="ex'+(done?" done":"")+'"><div class="exh"><div class="badge">'+(done?IC.check:i+1)+'</div><div class="exn"><b>'+esc(ej.n)+"</b><small>"+ej.s+" × "+esc(ej.r)+" · descanso "+ej.d+" s</small>"+(ej.cam?'<span class="camb">'+(ej.cam==="hoy"?"Solo hoy":"Cambiado")+" · en vez de "+esc(ej.o)+"</span>":"")+'</div><button class="ib" onclick="cambiar('+i+')">'+IC.cambio+'</button><button class="ib" onclick="tecnica('+i+')">'+IC.info+"</button></div>"+
       (u?'<div class="ult">Última vez · '+dm(u.f)+" · "+esc(normPeso(u.peso)||"—")+" · "+u.h+(u.h===1?" serie":" series")+"</div>":"")+
       (sb?'<div class="sube"><span><b>Toca subir</b> · '+esc(sb)+'</span><button onclick="subir('+i+')">Subir</button></div>':"")+
       '<div class="stp">'+(corp?'<button class="pv solo" onclick="editarPeso('+i+')">Peso corporal</button>':
-        '<button class="pm" onclick="pesoPaso('+i+',-1)">'+IC.menos+'</button><button class="pv" onclick="editarPeso('+i+')">'+esc(pv)+'</button><button class="pm" onclick="pesoPaso('+i+',1)">'+IC.mas+"</button>")+"</div>"+
+        '<button class="pm" onclick="pesoPaso('+i+',-1)">'+IC.menos+'</button><button class="pv" onclick="editarPeso('+i+')">'+(pv?esc(pv):'<span style="color:var(--tx2);font-weight:600">Poner peso</span>')+'</button><button class="pm" onclick="pesoPaso('+i+',1)">'+IC.mas+"</button>")+"</div>"+
       '<div class="sets">'+sets+"</div></div>";
   }).join("");
   h+='<button class="btn pri" onclick="terminar()"'+(hec?"":" disabled")+">Terminar entreno</button>";
@@ -925,7 +944,7 @@ function vEntreno(){
 function serie(i,k){
   if(entF>hoy()){toast("Ese día todavía no llega");return}
   audio();hap();
-  const on=marcar(entF,entD,i,k),r=RUTINA[entD];render();
+  const on=marcar(entF,entD,i,k),r=R();render();
   if(!on)return;
   const b=$("#s"+i+"_"+k);if(b)b.classList.add("pop");
   if(entF===hoy())wake(true);
@@ -934,12 +953,12 @@ function serie(i,k){
   const ej=r.e[i],exDone=s.ej[i].hechas.length>=ej.s;
   arrancarTimer(ej.d,exDone?"Descanso · sigue "+(r.e[i+1]?r.e[i+1].n.replace(/\s*\(.*?\)/,""):"el siguiente"):"Descanso");
 }
-function pesoPaso(i,dir){hap();const ej=RUTINA[entD].e[i];setPeso(ej.n,pasoPeso(ej,pesoDe(ej),dir));render()}
-function subir(i){const ej=RUTINA[entD].e[i],nv=tocaSubir(ej,entF);if(!nv)return;hap();setPeso(ej.n,nv);render();toast("Subido a "+nv)}
+function pesoPaso(i,dir){hap();const ej=R().e[i];setPeso(ej.n,pasoPeso(ej,pesoDe(ej),dir));render()}
+function subir(i){const ej=R().e[i],nv=tocaSubir(ej,entF);if(!nv)return;hap();setPeso(ej.n,nv);render();toast("Subido a "+nv)}
 const UNIS=[["kg","Kg"],["lado","Kg/lado"],["cu","Kg c/u"],["placas","Placas"],["corp","Corporal"]];
 let PU=null;
 function editarPeso(i){
-  const ej=RUTINA[entD].e[i],pv=pesoDe(ej),u=unidad(pv);
+  const ej=R().e[i],pv=pesoDe(ej),u=unidad(pv);
   PU={i,u:u==="txt"?"kg":u};
   hoja('<h2>'+esc(ej.n)+'</h2><div class="seg u" id="pU">'+UNIS.map(([k,l])=>'<button data-u="'+k+'" onclick="pesoU(\''+k+'\')">'+l+"</button>").join("")+"</div>"+
     '<input id="pIn" class="bigin" type="text" inputmode="decimal" value="'+(numDe(pv)==null?"":fmtN(numDe(pv)))+'" autocomplete="off">'+
@@ -956,27 +975,124 @@ function pesoU(u,quieto){
     cu:"Lo que pesa cada mancuerna.",placas:"Cuántas placas del pin, contando desde arriba. Los botones suben de una en una.",corp:"Sin peso extra. Se quitan los botones de subir y bajar."}[u];
 }
 function guardarPeso(){
-  const ej=RUTINA[entD].e[PU.i],n=parseFloat(($("#pIn").value||"").replace(",","."));
+  const ej=R().e[PU.i],n=parseFloat(($("#pIn").value||"").replace(",","."));
   if(PU.u!=="corp"&&!(n>0)){toast("Pon un número");return}
   const v=armarPeso(PU.u,n);setPeso(ej.n,v);cerrar();render();toast("Peso · "+v);
 }
 const fotoEj=(id,n)=>"ej/"+id+"_"+n+".jpg";
+function guiaHTML(g){
+  return g&&g.i?'<div class="gv" id="gv">'+(g.uno?"":'<img src="'+fotoEj(g.i,0)+'" alt="">')+'<img'+(g.uno?"":' class="b"')+' src="'+fotoEj(g.i,1)+'" alt="'+esc(g.n)+'"></div>'+(g.nota?'<p class="gnota">'+esc(g.nota)+"</p>":""):"";
+}
+const ytHTML=(g,n)=>'<a class="yt" href="https://www.youtube.com/results?search_query='+encodeURIComponent("como hacer "+(g&&g.q?g.q:n))+'" target="_blank" rel="noopener">'+IC.play+"Ver videos</a>";
+const fotoFallo=()=>document.querySelectorAll("#gv img").forEach(im=>im.onerror=()=>{const g=$("#gv");if(g)g.classList.add("off")});
 function tecnica(i){
-  const ej=RUTINA[entD].e[i],g=GUIA[ej.n];
-  const gv=g?'<div class="gv" id="gv">'+(g.uno?"":'<img src="'+fotoEj(g.i,0)+'" alt="">')+'<img'+(g.uno?"":' class="b"')+' src="'+fotoEj(g.i,1)+'" alt="'+esc(ej.n)+'"></div>'+(g.nota?'<p class="gnota">'+esc(g.nota)+"</p>":""):"";
+  const ej=R().e[i],gv=guiaHTML(fichaDe(ej.n));
   hoja('<h2>'+esc(ej.n)+'</h2>'+gv+'<div class="m3"><div><small>Series</small><b>'+ej.s+" × "+esc(ej.r)+'</b></div><div><small>Descanso</small><b>'+ej.d+' s</b></div><div><small>Peso</small><b>'+esc(pesoDe(ej))+'</b></div></div>'+
     '<p class="cue">'+esc(ej.c)+'</p>'+
-    '<a class="yt" href="https://www.youtube.com/results?search_query='+encodeURIComponent("como hacer "+(g?g.q:ej.n))+'" target="_blank" rel="noopener">'+IC.play+"Ver videos</a>"+
-    '<button class="btn s2" onclick="cerrar()">Entendido</button>');
-  document.querySelectorAll("#gv img").forEach(im=>im.onerror=()=>$("#gv").classList.add("off"));
+    ytHTML(fichaDe(ej.n),ej.n)+'<button class="btn s2" onclick="cerrar()">Entendido</button>');
+  fotoFallo();
+}
+
+/* ═══════════════ CAMBIAR EJERCICIO · ARSENAL ═══════════════ */
+// SW.i = hueco que se cambia (-1 = solo mirar el arsenal) · SW.g = grupo · SW.q = búsqueda
+let SW=null;
+const miniatura=F=>F.i?'<img loading="lazy" src="ej/t/'+F.i+'.jpg" alt="">':'<div class="ni">'+IC.lista+"</div>";
+function cambiar(i){
+  const ej=R().e[i],S=DB.get(K.ses,{})[entF];
+  if(S&&S.ej[i]&&S.ej[i].n===ej.n&&S.ej[i].hechas.length){toast("Ya marcaste series de este ejercicio");return}
+  hap();const F=fichaDe(ej.o)||fichaDe(ej.n);
+  SW={i,g:F?F.g:"Espalda",q:""};abrirArsenal();
+}
+function verArsenal(){SW={i:-1,g:"Espalda",q:""};abrirArsenal()}
+function abrirArsenal(){
+  let h;
+  if(SW.i>=0){const ej=R().e[SW.i];
+    h='<h2>Cambiar '+esc(ej.n)+'</h2><p class="p" style="margin-bottom:10px">Se quedan las '+ej.s+" series de "+esc(ej.r)+" y "+ej.d+" s de descanso.</p>"+
+      (ej.cam?'<button class="vol" onclick="aplicar(\''+jsq(ej.o)+'\',\'fijo\')">'+IC.cambio+"Volver a "+esc(ej.o)+"</button>":"");
+  }else h='<h2>Arsenal</h2><p class="p" style="margin-bottom:10px">'+arsenal().length+' ejercicios. Toca uno para ver cómo se hace y marcar si ya lo dominas.</p>';
+  h+='<input id="aQ" class="srch" placeholder="Buscar en todos" autocomplete="off" value="'+esc(SW.q)+'">'+
+     '<div class="gch" id="aG">'+GRUPOS.map(g=>'<button data-g="'+g+'">'+g+"</button>").join("")+'</div><div id="aL"></div>'+
+     (SW.i<0?'<button class="btn" style="margin-top:14px" onclick="crearEj()">Crear ejercicio</button>':"")+
+     '<button class="btn s2" style="margin-top:'+(SW.i<0?0:14)+'px" onclick="cerrar()">Cerrar</button>';
+  hoja(h);
+  $("#aQ").oninput=e=>{SW.q=e.target.value;pintarArsenal()};
+  document.querySelectorAll("#aG button").forEach(b=>b.onclick=()=>{hap();SW.g=b.dataset.g;SW.q="";$("#aQ").value="";pintarArsenal()});
+  pintarArsenal();
+}
+const jsq=s=>String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+function pintarArsenal(){
+  const q=norm(SW.q),act=SW.i>=0?R().e[SW.i].n:null;
+  document.querySelectorAll("#aG button").forEach(b=>b.classList.toggle("on",!q&&b.dataset.g===SW.g));
+  let L=arsenal().filter(F=>F.n!==act&&(q?norm(F.n).includes(q):F.g===SW.g));
+  const fila=F=>'<button onclick="fichaEj(\''+jsq(F.n)+'\')">'+miniatura(F)+'<div class="tx"><b>'+esc(F.n)+"</b>"+(q?"<small>"+F.g+"</small>":"")+"</div>"+IC.chev+"</button>";
+  let h="";
+  for(const[k,l]of NIV){const G=L.filter(F=>nivelDe(F)===k);if(G.length)h+='<div class="lh">'+l+" · "+G.length+'</div><div class="ars">'+G.map(fila).join("")+"</div>"}
+  $("#aL").innerHTML=h||'<div class="empty">Nada con ese nombre.</div>';
+}
+function fichaEj(n){
+  const F=fichaDe(n);if(!F)return;hap();
+  const nv=nivelDe(F),cam=SW&&SW.i>=0;
+  hoja('<h2>'+esc(F.n)+'</h2>'+guiaHTML(F)+(F.c?'<p class="cue">'+esc(F.c)+"</p>":"")+
+    '<div class="lh" style="margin-top:0">¿Lo dominas?</div><div class="seg u" id="nS">'+NIV.slice(0,3).map(([k,l])=>'<button data-n="'+k+'" class="'+(nv===k?"on":"")+'">'+l+"</button>").join("")+"</div>"+
+    ytHTML(F,F.n)+
+    (cam?'<button class="btn pri" onclick="aplicar(\''+jsq(F.n)+'\',\'hoy\')">Solo hoy</button><button class="btn s2" style="color:var(--orange)" onclick="aplicar(\''+jsq(F.n)+'\',\'fijo\')">Desde ahora · todos los '+DIA[entD].toLowerCase()+"</button>":"")+
+    (F.mio?'<button class="btn dng" onclick="borrarEj(\''+jsq(F.n)+'\')">Borrar ejercicio</button>':"")+
+    '<button class="btn s2" onclick="abrirArsenal()">Volver</button>');
+  document.querySelectorAll("#nS button").forEach(b=>b.onclick=()=>{hap();const N=DB.get(K.niv,{});N[F.n]=b.dataset.n;DB.set(K.niv,N);
+    document.querySelectorAll("#nS button").forEach(x=>x.classList.toggle("on",x===b))});
+  fotoFallo();
+}
+function aplicar(n,modo){
+  const C=cambios(),kf=entD+":"+SW.i,kh=entF+":"+kf,orig=RUTINA[entD].e[SW.i].n;
+  delete C.hoy[kh];
+  if(modo==="hoy"){if(n!==(C.fijo[kf]||orig))C.hoy[kh]=n}
+  else if(n===orig)delete C.fijo[kf];else C.fijo[kf]=n;
+  DB.set(K.cam,C);
+  const F=fichaDe(n);if(F&&F.i)[0,1].forEach(k=>fetch(fotoEj(F.i,k)).catch(()=>{})); // que quede guardada para el gym
+  cerrar();hap();render();
+  toast(n===orig?"Volvió a "+n:modo==="hoy"?"Solo hoy · "+n:"Desde ahora · "+n);
+}
+function crearEj(){
+  hoja('<h2>Crear ejercicio</h2><p class="p">Para una máquina o variante que no esté. Sin foto, pero con su búsqueda de videos.</p><div class="form">'+
+    '<label>Nombre<input id="eN" placeholder="Ej. Remo en máquina Hammer" style="width:62%"></label>'+
+    '<label>Músculo<select id="eG">'+GRUPOS.map(g=>'<option'+(g===SW.g?" selected":"")+">"+g+"</option>").join("")+"</select></label>"+
+    '<label>¿Lo dominas?<select id="eL">'+NIV.slice(0,3).map(([k,l])=>'<option value="'+k+'">'+l+"</option>").join("")+"</select></label></div>"+
+    '<textarea id="eC" class="ta2" placeholder="Cómo se hace (opcional)"></textarea><div style="height:14px"></div>'+
+    '<button class="btn pri" onclick="guardarEj()">Guardar</button><button class="btn s2" onclick="abrirArsenal()">Cancelar</button>');
+}
+function guardarEj(){
+  const n=cap(($("#eN").value||"").trim());if(!n){toast("Ponle nombre");return}
+  if(fichaDe(n)){toast("Ya existe uno con ese nombre");return}
+  const C=DB.get(K.ejc,[]);C.push({n,g:$("#eG").value,lv:$("#eL").value,c:($("#eC").value||"").trim(),q:n,mio:1});DB.set(K.ejc,C);
+  SW.g=$("#eG").value;SW.q="";abrirArsenal();toast("Creado · "+n);
+}
+function borrarEj(n){const C=DB.get(K.ejc,[]).filter(x=>x.n!==n);DB.set(K.ejc,C);abrirArsenal();toast("Borrado")}
+function verRutina(){
+  const C=cambios(),fi=Object.entries(C.fijo);
+  hoja('<h2>Tu rutina</h2><p class="p">Los cambios «desde ahora» quedan aquí. El bloque es hasta el 31 de octubre: cambia un ejercicio si la máquina no sirve, no la rutina entera.</p>'+
+    (fi.length?'<div class="pvw">'+fi.map(([k,n])=>{const[d,i]=k.split(":").map(Number);return'<div class="r"><div class="tx"><b>'+esc(n)+"</b><small>"+DIA[d]+" · en vez de "+esc(RUTINA[d].e[i].n)+"</small></div></div>"}).join("")+"</div>":
+      '<div class="card empty" style="background:var(--s2)">Sin cambios. Es la rutina original de rutina.md.</div>')+
+    '<button class="btn pri" onclick="copiar(mdRutina(),\'Copiado. Pégalo en rutina.md\')">Copiar para Obsidian</button>'+
+    (fi.length?'<button class="btn dng" id="vO" onclick="volverOriginal()">Volver todo al original</button>':"")+
+    '<button class="btn s2" onclick="cerrar()">Cerrar</button>');
+}
+let VCONF=false;
+function volverOriginal(){
+  if(!VCONF){VCONF=true;$("#vO").textContent="Toca otra vez para confirmar";setTimeout(()=>{VCONF=false},4000);return}
+  VCONF=false;const C=cambios();C.fijo={};DB.set(K.cam,C);cerrar();render();toast("Rutina original de vuelta");
+}
+function mdRutina(){
+  return[1,2,3,4,5].map(d=>{const r=rutinaDe(d,"9999-12-31");
+    return"## "+DIA[d].toUpperCase()+" — "+r.t+" · "+r.min+" min\n\n| # | Ejercicio | Series x Reps | Peso | Descanso |\n|---|---|---|---|---|\n"+
+      r.e.map((x,i)=>"| "+(i+1)+" | "+x.n+" | "+x.s+" x "+x.r+" | "+(pesoDe(x)||"—")+" | "+x.d+" s |").join("\n")}).join("\n\n")+"\n";
 }
 function markdownSesion(){
-  const r=RUTINA[entD],s=DB.get(K.ses,{})[entF];
+  const r=R(),s=DB.get(K.ses,{})[entF];
   const L=r.e.map((ej,i)=>{const e=s&&s.ej[i];return"- "+ej.n+" · "+(e?e.hechas.length:0)+"x"+ej.r+" · "+(e&&e.peso?normPeso(e.peso):pesoDe(ej))}).join("\n");
   return"---\ntype: gym-sesion\nfecha: "+entF+"\nsesion: "+r.t+"\nduracion: "+(s&&s.t0?Math.max(1,Math.round((s.t1-s.t0)/60000)):"")+"\nsueno: \nenergia: \nnota: \n---\n\n# "+entF+" · "+r.t+"\n\n"+L+"\n\n**Cómo estuvo:** \n\n*[[🏋️ Gym|← Gym]] · [[rutina|Rutina]]*\n";
 }
 function terminar(){
-  const r=RUTINA[entD],s=DB.get(K.ses,{})[entF];if(!s)return;
+  const r=R(),s=DB.get(K.ses,{})[entF];if(!s)return;
   pararTimer();wake(false);hap();
   const tot=seriesTot(r),hec=hechasSes(s),exc=r.e.filter((ej,i)=>s.ej[i]&&s.ej[i].hechas.length>=ej.s).length;
   const dur=s.t0&&s.t1?Math.max(1,Math.round((s.t1-s.t0)/60000)):null;
@@ -1113,6 +1229,8 @@ function vProgreso(){
   // ajustes
   h+='<div class="sec">Ajustes</div><div class="list">'+
      '<button class="row" onclick="ajustes()"><div class="ico" style="--c:#8e8e93">'+IC.gear+'</div><div class="tx"><b>Metas y cuerpo</b><small>'+fmt(metas().kcal)+" kcal · "+cfg().prot+' g proteína</small></div>'+IC.chev+"</button>"+
+     '<button class="row" onclick="verArsenal()"><div class="ico" style="--c:#bf5af2">'+IC.entreno+'</div><div class="tx"><b>Arsenal de ejercicios</b><small>'+arsenal().length+' con foto y técnica</small></div>'+IC.chev+"</button>"+
+     '<button class="row" onclick="verRutina()"><div class="ico" style="--c:#ff9f0a">'+IC.lista+'</div><div class="tx"><b>Tu rutina</b><small>'+(Object.keys(cambios().fijo).length||"Sin")+" cambios · copiar para Obsidian</small></div>"+IC.chev+"</button>"+
      '<button class="row" onclick="misAlimentos()"><div class="ico" style="--c:#30d158">'+IC.libro+'</div><div class="tx"><b>Mis alimentos</b><small>'+DB.get(K.cus,[]).length+' enseñados</small></div>'+IC.chev+"</button>"+
      '<button class="row" onclick="respaldo()"><div class="ico" style="--c:#0a84ff">'+IC.caja+'</div><div class="tx"><b>Copia de seguridad</b><small>Todo vive solo en este teléfono</small></div>'+IC.chev+"</button></div>";
   return[h,"Progreso"];
@@ -1173,7 +1291,7 @@ function respaldo(){
     '<div class="sec" style="margin-top:18px">Restaurar</div><textarea id="rTxt" class="ta" placeholder="Pega aquí un respaldo"></textarea>'+
     '<button class="btn" id="rBtn" onclick="restaurar()">Restaurar</button><button class="btn s2" onclick="cerrar()">Cerrar</button>');
 }
-function copiarRespaldo(){const d={};for(const k of Object.values(K))d[k]=DB.get(k,null);copiar(JSON.stringify({app:"gym",v:3,fecha:hoy(),datos:d}),"Respaldo copiado")}
+function copiarRespaldo(){const d={};for(const k of Object.values(K))d[k]=DB.get(k,null);copiar(JSON.stringify({app:"gym",v:4,fecha:hoy(),datos:d}),"Respaldo copiado")}
 let RCONF=false;
 function restaurar(){
   let j;try{j=JSON.parse($("#rTxt").value)}catch(e){toast("Eso no es un respaldo válido");return}
