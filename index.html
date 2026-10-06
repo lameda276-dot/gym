@@ -164,6 +164,35 @@ h1.lt{font-size:34px;font-weight:800;letter-spacing:-.022em;line-height:1.08;mar
 .set.pop{animation:pop .35s ease}
 @keyframes pop{40%{transform:scale(1.1)}}
 
+.sube{display:flex;align-items:center;gap:10px;margin-top:10px;padding:9px 9px 9px 12px;border-radius:13px;background:rgba(48,209,88,.14);font-size:14.5px}
+.sube span{flex:1;min-width:0}
+.sube b{color:var(--green)}
+.sube button{flex:0 0 auto;height:34px;padding:0 14px;border-radius:10px;background:var(--green);color:#000;font-weight:700;font-size:14.5px}
+.stp .pv.solo{flex:1}
+
+/* ───── guía visual ───── */
+.gv{position:relative;aspect-ratio:3/2;border-radius:16px;overflow:hidden;background:var(--s2);margin-bottom:12px}
+.gv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gv img.b{animation:alt 1.8s infinite}
+@keyframes alt{0%,42%{opacity:0}50%,92%{opacity:1}100%{opacity:0}}
+.gv.off::after{content:"La foto aparece cuando abras la app con internet";position:absolute;inset:0;display:grid;place-items:center;padding:20px;text-align:center;font-size:14px;color:var(--tx2)}
+.gv.off img{display:none}
+.gnota{font-size:13.5px;color:var(--tx2);margin:-4px 2px 12px;line-height:1.45}
+.yt{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:14px;background:var(--s2);color:var(--red);font-weight:600;font-size:16px;text-decoration:none;margin-bottom:10px}
+.yt svg{width:20px;height:20px}
+
+/* ───── unidad de peso ───── */
+.seg.u{margin-bottom:12px;background:var(--s2)}
+.seg.u button{font-size:13px;height:38px;padding:0 2px}
+.seg.u button.on{background:var(--s3)}
+
+/* ───── resumen semanal ───── */
+.res{background:linear-gradient(160deg,rgba(255,159,10,.2),rgba(255,55,95,.08)),var(--s1)}
+.res .m3{margin:12px 0 0}
+.res .m3 div{background:rgba(255,255,255,.07)}
+.res .x{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;color:var(--tx2)}
+.res .x svg{width:14px;height:14px}
+
 /* ───── timer ───── */
 #timer{position:fixed;left:16px;right:16px;bottom:calc(var(--tabh) + var(--sb) + 10px);max-width:480px;margin:0 auto;z-index:45;
   display:flex;align-items:center;gap:12px;padding:10px 10px 10px 12px;border-radius:22px;
@@ -309,21 +338,21 @@ const RUTINA={
  1:{t:"Push A · pecho",min:35,e:[
   {n:"Press banca plano (barra)",s:4,r:"8",p:"50 kg",d:90,c:"Escápulas juntas y pegadas al banco, pies firmes. Baja al pecho medio en 2 segundos y sube sin rebotar. Codos a 45°, no abiertos. Sin compañero, solo un peso que puedas frenar tú solo."},
   {n:"Press de hombro (máquina)",s:3,r:"10",p:"10 kg/lado",d:90,c:"Asiento a la altura que los agarres queden a nivel de las orejas al empezar. Espalda pegada al respaldo. Empuja sin bloquear los codos arriba."},
-  {n:"Pec deck",s:3,r:"12",p:"nivel 4",d:60,c:"Agarres a la altura del medio del pecho. Codos suaves y fijos. Junta al frente apretando el pecho un segundo y abre despacio sin pasar la línea de los hombros."},
+  {n:"Pec deck",s:3,r:"12",p:"4 placas",d:60,c:"Agarres a la altura del medio del pecho. Codos suaves y fijos. Junta al frente apretando el pecho un segundo y abre despacio sin pasar la línea de los hombros."},
   {n:"Pushdown (barra)",s:3,r:"12",p:"15 kg",d:60,c:"Es tríceps. Codos pegados a las costillas y quietos todo el recorrido. Baja hasta bloquear y aprieta un segundo. Si los codos se abren o el cuerpo se inclina, sobra peso."},
   {n:"Elevaciones laterales",s:3,r:"15",p:"4 kg c/u",d:45,c:"Codos suaves, sube solo hasta la altura de los hombros. Meñique un poco más alto que el pulgar. Baja en 2 segundos. Si balanceas el cuerpo, sobra peso: es de repeticiones, no de kilos."}]},
  2:{t:"Pull A · espalda",min:40,e:[
   {n:"Remo con apoyo de pecho",s:4,r:"10",p:"10 kg/lado",d:90,c:"Pecho pegado al pad todo el tiempo. Tira con los codos, no con las manos, y llévalos pegados al cuerpo. Aprieta las escápulas un segundo atrás y suelta despacio."},
-  {n:"Jalón al pecho, agarre ancho",s:3,r:"10",p:"nivel 5",d:90,c:"Pecho arriba y hombros abajo antes de tirar. Codos hacia los bolsillos. La barra llega a la clavícula. Si te vas hacia atrás más de 15°, sobra peso."},
-  {n:"Reverse fly (máquina)",s:3,r:"15",p:"nivel 3",d:45,c:"Pecho al pad, agarres a la altura de los hombros. Abre con los codos un poco doblados hasta la línea del cuerpo. Ligero y controlado: es lo que equilibra tanto press."},
+  {n:"Jalón al pecho, agarre ancho",s:3,r:"10",p:"5 placas",d:90,c:"Pecho arriba y hombros abajo antes de tirar. Codos hacia los bolsillos. La barra llega a la clavícula. Si te vas hacia atrás más de 15°, sobra peso."},
+  {n:"Reverse fly (máquina)",s:3,r:"15",p:"3 placas",d:45,c:"Pecho al pad, agarres a la altura de los hombros. Abre con los codos un poco doblados hasta la línea del cuerpo. Ligero y controlado: es lo que equilibra tanto press."},
   {n:"Curl de bíceps (mancuernas)",s:3,r:"10",p:"5 kg c/u",d:60,c:"Codos pegados a las costillas y quietos. Sube con el bíceps y baja en 2 segundos. Si el codo se va adelante o te balanceas, sobra peso."},
   {n:"Encogimientos de trapecio",s:3,r:"12",p:"10 kg c/u",d:45,c:"Solo arriba y abajo, sin rotar los hombros. Pausa un segundo arriba. Brazos como ganchos, sin doblar los codos."}]},
  3:{t:"Pierna completa",min:50,e:[
   {n:"Leg press",s:4,r:"12",p:"60 kg",d:90,c:"Pies al ancho de hombros, al medio de la plataforma. Baja hasta 90° sin despegar la espalda baja del asiento. Empuja con todo el pie y nunca bloquees las rodillas arriba."},
   {n:"RDL con mancuernas",s:3,r:"10",p:"10 kg c/u",d:90,c:"Mancuernas pegadas a los muslos, rodillas apenas dobladas y fijas. La cadera va hacia atrás, no hacia abajo, con la espalda recta. Baja hasta sentir el isquio y sube apretando el glúteo."},
   {n:"Sentadilla goblet",s:3,r:"10",p:"12 kg",d:90,c:"Mancuerna pegada al pecho, codos abajo. Pies algo más abiertos que los hombros, puntas hacia afuera. Baja entre las rodillas hasta que los codos toquen los muslos."},
-  {n:"Leg curl acostado",s:3,r:"12",p:"nivel 4",d:60,c:"Rodilla alineada con el eje de la máquina, rodillo justo sobre el talón. Cadera pegada al banco. Sube en 1 segundo y baja en 2."},
-  {n:"Extensión de cuádriceps",s:3,r:"15",p:"nivel 4",d:60,c:"Rodilla alineada con el eje. Sube hasta estirar del todo, aprieta un segundo arriba y baja en 2 segundos. Sin impulso."},
+  {n:"Leg curl acostado",s:3,r:"12",p:"4 placas",d:60,c:"Rodilla alineada con el eje de la máquina, rodillo justo sobre el talón. Cadera pegada al banco. Sube en 1 segundo y baja en 2."},
+  {n:"Extensión de cuádriceps",s:3,r:"15",p:"4 placas",d:60,c:"Rodilla alineada con el eje. Sube hasta estirar del todo, aprieta un segundo arriba y baja en 2 segundos. Sin impulso."},
   {n:"Elevación de talones en leg press",s:3,r:"15",p:"igual que leg press",d:45,c:"Solo la punta del pie en el borde de la plataforma, rodillas casi rectas. Sube a la punta, pausa, y baja hasta estirar. Sin rebotar."},
   {n:"Plancha",s:3,r:"30 s",p:"peso corporal",d:45,c:"Codos bajo los hombros, cuerpo en línea recta, glúteo apretado. Si la cadera se cae o se sube, se acabó la serie."}]},
  4:{t:"Push B · hombro",min:45,e:[
@@ -333,11 +362,40 @@ const RUTINA={
   {n:"Elevaciones frontales",s:3,r:"12",p:"5 kg c/u",d:45,c:"Hasta la altura de los ojos, brazos casi rectos. Alternado o con un disco a dos manos. Sin balancearte."},
   {n:"Extensión de tríceps sobre cabeza",s:3,r:"12",p:"10 kg",d:60,c:"Codos apuntando al techo y cerca de las orejas. Baja detrás de la cabeza hasta sentir el estiramiento y sube sin mover los codos."}]},
  5:{t:"Pull B · espalda y brazos",min:35,e:[
-  {n:"Jalón al pecho, agarre ancho",s:3,r:"10",p:"nivel 5",d:90,c:"Pecho arriba y hombros abajo antes de tirar. Codos hacia los bolsillos. La barra llega a la clavícula. Si te vas hacia atrás más de 15°, sobra peso."},
+  {n:"Jalón al pecho, agarre ancho",s:3,r:"10",p:"5 placas",d:90,c:"Pecho arriba y hombros abajo antes de tirar. Codos hacia los bolsillos. La barra llega a la clavícula. Si te vas hacia atrás más de 15°, sobra peso."},
   {n:"Remo con apoyo de pecho",s:3,r:"10",p:"10 kg/lado",d:90,c:"Pecho pegado al pad todo el tiempo. Tira con los codos, no con las manos. Aprieta las escápulas un segundo atrás."},
   {n:"Curl martillo",s:3,r:"10",p:"5 kg c/u",d:60,c:"Codos quietos, palma mirando al muslo todo el recorrido. Alterna brazos si te cuesta mantener la postura."},
   {n:"Patada de tríceps (polea)",s:3,r:"12",p:"5 kg",d:45,c:"Torso a 45°, codo alto y fijo a la altura de la espalda. Extiende hasta bloquear, pausa y baja. Peso ligero: es de contracción, no de carga."},
   {n:"Elevación de piernas en banco",s:3,r:"12",p:"peso corporal",d:45,c:"Manos bajo el glúteo, espalda baja pegada al banco. Sube las piernas hasta 90° y baja despacio sin tocar el piso."}]}
+};
+
+/* GUÍA VISUAL — fotos de free-exercise-db (Unlicense), reducidas y servidas desde ej/.
+   i = id del ejercicio allá · q = búsqueda en YouTube · uno = solo la foto final · nota = aviso si la foto no calza exacto.
+   Revisadas a ojo el 6-oct contra las máquinas del Coliseum. */
+const GUIA={
+ "Press banca plano (barra)":{i:"Barbell_Bench_Press_-_Medium_Grip",q:"press banca plano con barra"},
+ "Press de hombro (máquina)":{i:"Leverage_Shoulder_Press",q:"press de hombro en maquina convergente"},
+ "Pec deck":{i:"Butterfly",q:"pec deck aperturas en maquina"},
+ "Pushdown (barra)":{i:"Triceps_Pushdown",q:"jalon de triceps en polea con barra"},
+ "Elevaciones laterales":{i:"Side_Lateral_Raise",q:"elevaciones laterales con mancuernas"},
+ "Remo con apoyo de pecho":{i:"Leverage_Iso_Row",q:"remo con apoyo de pecho en maquina"},
+ "Jalón al pecho, agarre ancho":{i:"Wide-Grip_Lat_Pulldown",q:"jalon al pecho agarre ancho"},
+ "Reverse fly (máquina)":{i:"Reverse_Machine_Flyes",q:"reverse fly en maquina deltoides posterior"},
+ "Curl de bíceps (mancuernas)":{i:"Dumbbell_Bicep_Curl",q:"curl de biceps con mancuernas"},
+ "Encogimientos de trapecio":{i:"Dumbbell_Shrug",q:"encogimientos de trapecio con mancuernas"},
+ "Leg press":{i:"Leg_Press",q:"prensa de piernas leg press"},
+ "RDL con mancuernas":{i:"Stiff-Legged_Dumbbell_Deadlift",q:"peso muerto rumano con mancuernas",nota:"En la foto baja un poco más de lo necesario. Para cuando sientas el isquio estirado, con la espalda recta."},
+ "Sentadilla goblet":{i:"Goblet_Squat",q:"sentadilla goblet"},
+ "Leg curl acostado":{i:"Lying_Leg_Curls",q:"curl femoral acostado en maquina"},
+ "Extensión de cuádriceps":{i:"Leg_Extensions",q:"extension de cuadriceps en maquina"},
+ "Elevación de talones en leg press":{i:"Calf_Press_On_The_Leg_Press_Machine",q:"pantorrillas en prensa de piernas"},
+ "Plancha":{i:"Plank",q:"plancha abdominal tecnica",uno:1},
+ "Press inclinado (mancuernas)":{i:"Incline_Dumbbell_Press",q:"press inclinado con mancuernas"},
+ "Elevaciones frontales":{i:"Front_Dumbbell_Raise",q:"elevaciones frontales con mancuernas"},
+ "Extensión de tríceps sobre cabeza":{i:"Cable_Rope_Overhead_Triceps_Extension",q:"extension de triceps sobre la cabeza",nota:"La foto es en polea con cuerda. Con mancuerna es el mismo movimiento: codos fijos apuntando al techo."},
+ "Curl martillo":{i:"Hammer_Curls",q:"curl martillo con mancuernas"},
+ "Patada de tríceps (polea)":{i:"Tricep_Dumbbell_Kickback",q:"patada de triceps en polea",nota:"La foto es con mancuerna. En polea va igual: torso inclinado, codo alto y quieto, solo se mueve el antebrazo."},
+ "Elevación de piernas en banco":{i:"Flat_Bench_Lying_Leg_Raise",q:"elevacion de piernas acostado en banco"}
 };
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -461,12 +519,15 @@ const IC={
  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>',
  caja:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg>',
  libro:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 21H20"/></svg>',
+ play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8c1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8zM10 15V9l5.2 3z"/></svg>',
+ x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+ cinta:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v6H3z"/><path d="M7 9v3M11 9v2M15 9v3M19 9v2"/></svg>',
  bascula:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8.5 9a5 5 0 0 1 7 0M12 12l1.6-2.4"/></svg>'
 };
 
 /* ═══════════════ utilidades ═══════════════ */
 const $=s=>document.querySelector(s);
-const K={ses:"gym.sesiones",pes:"gym.pesos",com:"gym.comida",bw:"gym.peso",cfg:"gym.cfg",sup:"gym.supl",cus:"gym.custom"};
+const K={ses:"gym.sesiones",pes:"gym.pesos",com:"gym.comida",bw:"gym.peso",cfg:"gym.cfg",sup:"gym.supl",cus:"gym.custom",cin:"gym.cintura",rv:"gym.resumenVisto"};
 const DB={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},
           set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){toast("No pude guardar. ¿Memoria llena?")}}};
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -579,7 +640,22 @@ function nombreDe(txt){
 function totales(its){return its.reduce((a,x)=>({k:a.k+(x.k||0),p:a.p+(x.p||0),c:a.c+(x.c||0),f:a.f+(x.f||0)}),{k:0,p:0,c:0,f:0})}
 
 /* ═══════════════ datos de entreno ═══════════════ */
-const pesoDe=ej=>{const v=DB.get(K.pes,{})[ej.n];return v==null?ej.p:v};
+// "nivel 5" de la v2 se lee como "5 placas": es lo mismo, contado como lo ve en la máquina
+const placas=n=>n+(n==1?" placa":" placas");
+const normPeso=v=>v==null?v:String(v).replace(/nivel\s*(\d+)/i,(_,n)=>placas(+n));
+const pesoDe=ej=>{const v=DB.get(K.pes,{})[ej.n];return normPeso(v==null?ej.p:v)};
+// unidad: kg · lado (kg por lado) · cu (kg cada mancuerna) · placas · corp (peso corporal) · txt (otro texto)
+function unidad(v){v=String(v||"");
+  if(/placa|nivel/i.test(v))return"placas";
+  if(/corporal|^bw$/i.test(v))return"corp";
+  if(!/\d/.test(v))return"txt";
+  return/lado/i.test(v)?"lado":/c\/u/i.test(v)?"cu":"kg"}
+const numDe=v=>{const m=String(v||"").match(/(\d+(?:[.,]\d+)?)/);return m?parseFloat(m[1].replace(",",".")):null};
+function armarPeso(u,n){
+  if(u==="corp")return"peso corporal";
+  if(u==="placas")return placas(Math.max(1,Math.round(n)));
+  return fmtN(n)+(u==="lado"?" kg/lado":u==="cu"?" kg c/u":" kg");
+}
 function setPeso(n,v){const P=DB.get(K.pes,{});v=String(v).trim();if(v)P[n]=v;else delete P[n];DB.set(K.pes,P)}
 const seriesTot=r=>r.e.reduce((a,x)=>a+x.s,0);
 const hechasSes=s=>s?s.ej.reduce((a,e)=>a+e.hechas.length,0):0;
@@ -603,13 +679,31 @@ function ultimaVez(nombre,antes){
   return null;
 }
 function pasoPeso(ej,v,dir){
-  const niv=v.match(/nivel\s*(\d+)/i);
-  if(niv)return v.replace(/nivel\s*\d+/i,"nivel "+Math.max(1,+niv[1]+dir));
+  v=normPeso(v);const u=unidad(v);
+  if(u==="corp"||u==="txt")return v;
+  if(u==="placas")return placas(Math.max(1,numDe(v)+dir));
   const m=v.match(/(\d+(?:[.,]\d+)?)/);if(!m)return v;
   const x=parseFloat(m[1].replace(",","."));
   const pierna=/leg press|sentadilla|talones/i.test(ej.n)&&!/c\/u|lado/i.test(v);
-  const nv=Math.max(0,x+dir*(pierna?5:2.5));
+  // mancuernas livianas van de 1 en 1 (4 → 5 kg); +2,5 sobre 4 kg sería una mancuerna que no existe
+  const liviana=u==="cu"&&x+(dir<0?-1:0)<10;
+  const nv=Math.max(0,x+dir*(pierna?5:liviana?1:2.5));
   return v.replace(m[1],fmtN(nv));
+}
+
+// "Toca subir": las dos últimas sesiones con este ejercicio (de cualquier día) tienen todas
+// sus series hechas, con el mismo peso, y ese peso es el que está puesto hoy.
+function tocaSubir(ej,antes){
+  const pv=pesoDe(ej),u=unidad(pv);if(u==="corp"||u==="txt")return null;
+  const S=DB.get(K.ses,{}),ult=[];
+  for(const f of Object.keys(S).filter(x=>x<antes).sort().reverse()){
+    const s=S[f],r=RUTINA[s.dia],e=s.ej.find(x=>x.n===ej.n&&x.hechas.length);if(!e)continue;
+    const meta=r&&r.e.find(x=>x.n===ej.n);
+    ult.push({ok:!!meta&&e.hechas.length>=meta.s,p:normPeso(e.peso)});
+    if(ult.length===2)break;
+  }
+  if(ult.length<2||!ult.every(x=>x.ok&&x.p===pv))return null;
+  const nv=pasoPeso(ej,pv,1);return nv!==pv?nv:null;
 }
 
 /* ═══════════════ comida: datos ═══════════════ */
@@ -735,6 +829,7 @@ function vHoy(){
   const tot=r?seriesTot(r):0,hec=hechasSes(s),v=ventana();
   const saludo=H<12?"Buenos días":H<19?"Buenas tardes":"Buenas noches";
   let h='<div class="eyebrow">'+fechaLarga(f)+'</div><h1 class="lt">'+saludo+"</h1>";
+  h+=tarjetaResumen();
   if(!c.rev)h+='<div class="ban"><span><b>Afina las calorías.</b> Pon tu edad, altura y el peso de hoy.</span><button onclick="ajustes()">Ajustar</button></div>';
   const kr=m.kcal-t.k;
   h+='<div class="card press" onclick="ir(\'comida\')"><div class="rings"><svg viewBox="0 0 132 132">'+
@@ -772,6 +867,31 @@ function vHoy(){
      SUPL.map(x=>'<button class="row" onclick="sup(\''+x.id+'\')"><div class="ico" style="--c:'+x.c+'">'+x.i+'</div><div class="tx"><b>'+x.n+"</b><small>"+x.h+'</small></div><div class="chk'+(SP[x.id]?" on":"")+'">'+(SP[x.id]?IC.check:"")+"</div></button>").join("")+"</div>";
   return[h,saludo];
 }
+// Resumen de la semana pasada: sale la primera vez que abre la app en una semana nueva, el día que sea
+// (los lunes falla, así que no se ata al lunes), y se queda en Hoy hasta que lo cierre.
+const ultimoHasta=(o,f)=>{const ks=Object.keys(o).filter(k=>k<=f).sort();return ks.length?o[ks[ks.length-1]]:null};
+function resumen(){
+  const lun=addD(lunesDe(hoy()),-7),dom=addD(lun,6);
+  if(DB.get(K.rv,"")>=lun)return null;
+  const C=DB.get(K.com,{}),bw=DB.get(K.bw,{}),ci=DB.get(K.cin,{});
+  let ent=0,dc=0,kc=0,pr=0;
+  for(let d=0;d<7;d++){const f=addD(lun,d);if(entrenoEn(f))ent++;if(C[f]&&C[f].length){const t=totDia(f);dc++;kc+=t.k;pr+=t.p}}
+  // contra el último dato de antes de la semana; si no hay, contra el primero de la semana
+  const dif=o=>{const en=Object.keys(o).filter(k=>k>=lun&&k<=dom).sort();if(!en.length)return null;
+    const a=ultimoHasta(o,addD(lun,-1));return a!=null?o[en[en.length-1]]-a:en.length>1?o[en[en.length-1]]-o[en[0]]:null};
+  const dp=dif(bw),dcm=dif(ci);
+  if(!ent&&!dc&&dp===null&&dcm===null)return null;
+  return{lun,dom,ent,dc,kc:dc?kc/dc:0,pr:dc?pr/dc:0,dp,dcm};
+}
+function cerrarResumen(){hap();const R=resumen();if(R)DB.set(K.rv,R.lun);render()}
+function tarjetaResumen(){
+  const R=resumen();if(!R)return"";
+  const sg=(v,u)=>v===null?"—":(v<=0?"−":"+")+fmt1(Math.abs(v))+" "+u;
+  return'<div class="card res"><button class="x" onclick="cerrarResumen()">'+IC.x+'</button><div style="font-size:13px;font-weight:600;color:var(--orange)">Tu semana pasada · '+dm(R.lun)+" al "+dm(R.dom)+'</div>'+
+    '<div style="font-size:24px;font-weight:800;letter-spacing:-.015em;margin-top:6px">'+R.ent+" de 3 entrenos"+(R.ent>=3?" ✓":"")+'</div>'+
+    '<div class="m3"><div><small>Kcal / día</small><b>'+(R.dc?fmt(R.kc):"—")+'</b></div><div><small>Proteína</small><b>'+(R.dc?Math.round(R.pr)+" g":"—")+'</b></div><div><small>Peso</small><b>'+sg(R.dp,"kg")+'</b></div></div>'+
+    '<div class="hint" style="text-align:left;padding:10px 0 0">'+(R.dc?"Promedio de "+R.dc+(R.dc===1?" día":" días")+" con comida anotada.":"No anotaste comida esa semana.")+(R.dcm!==null?" Cintura "+sg(R.dcm,"cm")+".":"")+"</div></div>";
+}
 function sup(id){hap();const A=DB.get(K.sup,{}),f=hoy(),D=A[f]||(A[f]={});D[id]=!D[id];DB.set(K.sup,A);render()}
 function irEntrenoHoy(){entD=new Date().getDay();entF=hoy();ir("entreno")}
 
@@ -787,12 +907,15 @@ function vEntreno(){
   h+='<div class="prog"><div class="pt"><span><b>'+hec+"</b> de "+tot+" series</span><span>"+r.min+' min</span></div><div class="bar"><i style="width:'+(hec/tot*100)+'%"></i></div></div>';
   if(futuro)h+='<div class="ban"><span><b>Ese día todavía no llega.</b> Puedes ver la rutina, no marcar series.</span></div>';
   h+=r.e.map((ej,i)=>{
-    const hs=s&&s.ej[i]?s.ej[i].hechas:[],done=hs.length>=ej.s,u=ultimaVez(ej.n,entF),pv=pesoDe(ej);
+    const hs=s&&s.ej[i]?s.ej[i].hechas:[],done=hs.length>=ej.s,u=ultimaVez(ej.n,entF),pv=pesoDe(ej),corp=unidad(pv)==="corp";
+    const sb=!futuro&&!hs.length?tocaSubir(ej,entF):null;
     const sets=Array.from({length:ej.s},(_,k)=>{const on=hs.includes(k);
       return'<button class="set'+(on?" on":"")+'" id="s'+i+"_"+k+'" onclick="serie('+i+","+k+')"'+(futuro?" disabled":"")+">"+(on?IC.check:"<span>"+(k+1)+"</span>")+"<small>"+esc(ej.r)+(/s$/.test(ej.r)?"":" reps")+"</small></button>"}).join("");
     return'<div class="ex'+(done?" done":"")+'"><div class="exh"><div class="badge">'+(done?IC.check:i+1)+'</div><div class="exn"><b>'+esc(ej.n)+"</b><small>"+ej.s+" × "+esc(ej.r)+" · descanso "+ej.d+' s</small></div><button class="ib" onclick="tecnica('+i+')">'+IC.info+"</button></div>"+
-      (u?'<div class="ult">Última vez · '+dm(u.f)+" · "+esc(u.peso||"—")+" · "+u.h+(u.h===1?" serie":" series")+"</div>":"")+
-      '<div class="stp"><button class="pm" onclick="pesoPaso('+i+',-1)">'+IC.menos+'</button><button class="pv" onclick="editarPeso('+i+')">'+esc(pv)+'</button><button class="pm" onclick="pesoPaso('+i+',1)">'+IC.mas+"</button></div>"+
+      (u?'<div class="ult">Última vez · '+dm(u.f)+" · "+esc(normPeso(u.peso)||"—")+" · "+u.h+(u.h===1?" serie":" series")+"</div>":"")+
+      (sb?'<div class="sube"><span><b>Toca subir</b> · '+esc(sb)+'</span><button onclick="subir('+i+')">Subir</button></div>':"")+
+      '<div class="stp">'+(corp?'<button class="pv solo" onclick="editarPeso('+i+')">Peso corporal</button>':
+        '<button class="pm" onclick="pesoPaso('+i+',-1)">'+IC.menos+'</button><button class="pv" onclick="editarPeso('+i+')">'+esc(pv)+'</button><button class="pm" onclick="pesoPaso('+i+',1)">'+IC.mas+"</button>")+"</div>"+
       '<div class="sets">'+sets+"</div></div>";
   }).join("");
   h+='<button class="btn pri" onclick="terminar()"'+(hec?"":" disabled")+">Terminar entreno</button>";
@@ -812,22 +935,44 @@ function serie(i,k){
   arrancarTimer(ej.d,exDone?"Descanso · sigue "+(r.e[i+1]?r.e[i+1].n.replace(/\s*\(.*?\)/,""):"el siguiente"):"Descanso");
 }
 function pesoPaso(i,dir){hap();const ej=RUTINA[entD].e[i];setPeso(ej.n,pasoPeso(ej,pesoDe(ej),dir));render()}
+function subir(i){const ej=RUTINA[entD].e[i],nv=tocaSubir(ej,entF);if(!nv)return;hap();setPeso(ej.n,nv);render();toast("Subido a "+nv)}
+const UNIS=[["kg","Kg"],["lado","Kg/lado"],["cu","Kg c/u"],["placas","Placas"],["corp","Corporal"]];
+let PU=null;
 function editarPeso(i){
-  const ej=RUTINA[entD].e[i];
-  hoja('<h2>'+esc(ej.n)+'</h2><p class="p">Escribe el peso como lo dices: «52,5 kg», «nivel 6», «15 kg/lado», «12,5 kg c/u». Se queda como el nuevo peso de este ejercicio.</p>'+
-    '<input id="pIn" class="bigin" value="'+esc(pesoDe(ej))+'" autocomplete="off">'+
-    '<button class="btn pri" onclick="guardarPeso('+i+')">Guardar</button><button class="btn s2" onclick="cerrar()">Cancelar</button>');
-  setTimeout(()=>{const x=$("#pIn");x.focus();x.select()},350);
+  const ej=RUTINA[entD].e[i],pv=pesoDe(ej),u=unidad(pv);
+  PU={i,u:u==="txt"?"kg":u};
+  hoja('<h2>'+esc(ej.n)+'</h2><div class="seg u" id="pU">'+UNIS.map(([k,l])=>'<button data-u="'+k+'" onclick="pesoU(\''+k+'\')">'+l+"</button>").join("")+"</div>"+
+    '<input id="pIn" class="bigin" type="text" inputmode="decimal" value="'+(numDe(pv)==null?"":fmtN(numDe(pv)))+'" autocomplete="off">'+
+    '<p class="p" id="pAy"></p>'+
+    '<button class="btn pri" onclick="guardarPeso()">Guardar</button><button class="btn s2" onclick="cerrar()">Cancelar</button>');
+  pesoU(PU.u,1);
+  if(u!=="corp")setTimeout(()=>{const x=$("#pIn");if(x){x.focus();x.select()}},350);
 }
-function guardarPeso(i){const v=$("#pIn").value.trim();if(!v)return;setPeso(RUTINA[entD].e[i].n,v);cerrar();render();toast("Peso actualizado")}
+function pesoU(u,quieto){
+  if(!quieto)hap();PU.u=u;
+  document.querySelectorAll("#pU button").forEach(b=>b.classList.toggle("on",b.dataset.u===u));
+  $("#pIn").style.display=u==="corp"?"none":"";$("#pIn").inputMode=u==="placas"?"numeric":"decimal";
+  $("#pAy").textContent={kg:"Lo que marca la barra, la máquina o la mancuerna.",lado:"Los discos de un solo lado. La barra o el brazo de la máquina no se cuentan.",
+    cu:"Lo que pesa cada mancuerna.",placas:"Cuántas placas del pin, contando desde arriba. Los botones suben de una en una.",corp:"Sin peso extra. Se quitan los botones de subir y bajar."}[u];
+}
+function guardarPeso(){
+  const ej=RUTINA[entD].e[PU.i],n=parseFloat(($("#pIn").value||"").replace(",","."));
+  if(PU.u!=="corp"&&!(n>0)){toast("Pon un número");return}
+  const v=armarPeso(PU.u,n);setPeso(ej.n,v);cerrar();render();toast("Peso · "+v);
+}
+const fotoEj=(id,n)=>"ej/"+id+"_"+n+".jpg";
 function tecnica(i){
-  const ej=RUTINA[entD].e[i];
-  hoja('<h2>'+esc(ej.n)+'</h2><div class="m3"><div><small>Series</small><b>'+ej.s+" × "+esc(ej.r)+'</b></div><div><small>Descanso</small><b>'+ej.d+' s</b></div><div><small>Peso</small><b>'+esc(pesoDe(ej))+'</b></div></div>'+
-    '<p class="cue">'+esc(ej.c)+'</p><button class="btn s2" onclick="cerrar()">Entendido</button>');
+  const ej=RUTINA[entD].e[i],g=GUIA[ej.n];
+  const gv=g?'<div class="gv" id="gv">'+(g.uno?"":'<img src="'+fotoEj(g.i,0)+'" alt="">')+'<img'+(g.uno?"":' class="b"')+' src="'+fotoEj(g.i,1)+'" alt="'+esc(ej.n)+'"></div>'+(g.nota?'<p class="gnota">'+esc(g.nota)+"</p>":""):"";
+  hoja('<h2>'+esc(ej.n)+'</h2>'+gv+'<div class="m3"><div><small>Series</small><b>'+ej.s+" × "+esc(ej.r)+'</b></div><div><small>Descanso</small><b>'+ej.d+' s</b></div><div><small>Peso</small><b>'+esc(pesoDe(ej))+'</b></div></div>'+
+    '<p class="cue">'+esc(ej.c)+'</p>'+
+    '<a class="yt" href="https://www.youtube.com/results?search_query='+encodeURIComponent("como hacer "+(g?g.q:ej.n))+'" target="_blank" rel="noopener">'+IC.play+"Ver videos</a>"+
+    '<button class="btn s2" onclick="cerrar()">Entendido</button>');
+  document.querySelectorAll("#gv img").forEach(im=>im.onerror=()=>$("#gv").classList.add("off"));
 }
 function markdownSesion(){
   const r=RUTINA[entD],s=DB.get(K.ses,{})[entF];
-  const L=r.e.map((ej,i)=>{const e=s&&s.ej[i];return"- "+ej.n+" · "+(e?e.hechas.length:0)+"x"+ej.r+" · "+(e&&e.peso?e.peso:pesoDe(ej))}).join("\n");
+  const L=r.e.map((ej,i)=>{const e=s&&s.ej[i];return"- "+ej.n+" · "+(e?e.hechas.length:0)+"x"+ej.r+" · "+(e&&e.peso?normPeso(e.peso):pesoDe(ej))}).join("\n");
   return"---\ntype: gym-sesion\nfecha: "+entF+"\nsesion: "+r.t+"\nduracion: "+(s&&s.t0?Math.max(1,Math.round((s.t1-s.t0)/60000)):"")+"\nsueno: \nenergia: \nnota: \n---\n\n# "+entF+" · "+r.t+"\n\n"+L+"\n\n**Cómo estuvo:** \n\n*[[🏋️ Gym|← Gym]] · [[rutina|Rutina]]*\n";
 }
 function terminar(){
@@ -837,7 +982,7 @@ function terminar(){
   const dur=s.t0&&s.t1?Math.max(1,Math.round((s.t1-s.t0)/60000)):null;
   hoja('<div class="fin">'+(hec>=tot?"🏆":"💪")+'</div><h2 style="text-align:center">'+(hec>=tot?"Entreno completo":"Buen trabajo")+'</h2>'+
     '<div class="m3"><div><small>Series</small><b>'+hec+"/"+tot+'</b></div><div><small>Ejercicios</small><b>'+exc+"/"+r.e.length+'</b></div><div><small>Duración</small><b>'+(dur?dur+" min":"—")+'</b></div></div>'+
-    '<p class="p" style="text-align:center">'+(hec>=tot?"Cuando todas las series salgan con margen, toca subir con el botón +.":"Cuenta como marca. Lo que importa es haber venido.")+'</p>'+
+    '<p class="p" style="text-align:center">'+(hec>=tot?"Si la próxima vez también completas todo con este peso, te aviso que toca subir.":"Cuenta como marca. Lo que importa es haber venido.")+'</p>'+
     '<button class="btn pri" onclick="copiar(markdownSesion(),\'Copiado. Pégalo en 📓 Sesiones/\')">Copiar para Obsidian</button><button class="btn s2" onclick="cerrar()">Listo</button>');
 }
 
@@ -924,16 +1069,16 @@ function borrar(id){const e=entradas(comF).find(x=>x.id===id),f=comF;quitar(f,id
   if(e)toast("Eliminado",{t:"Deshacer",fn:()=>{const C=DB.get(K.com,{});(C[f]||(C[f]=[])).push(e);DB.set(K.com,C);render()}})}
 
 /* ═══════════════ PROGRESO ═══════════════ */
-function graficoPeso(){
-  const bw=DB.get(K.bw,{}),ks=Object.keys(bw).sort().slice(-60);
-  if(ks.length<2)return'<div class="hint" style="text-align:left;padding:12px 0 0">'+(ks.length?"Con un segundo registro aparece la curva.":"Pésate en ayunas, al levantarte, una vez por semana.")+"</div>";
+function grafico(bw,col,gid,vacio){
+  const ks=Object.keys(bw).sort().slice(-60);
+  if(ks.length<2)return'<div class="hint" style="text-align:left;padding:12px 0 0">'+(ks.length?"Con un segundo registro aparece la curva.":vacio)+"</div>";
   const vs=ks.map(k=>bw[k]),mn=Math.min(...vs),mx=Math.max(...vs),pad=Math.max(.6,(mx-mn)*.2),lo=mn-pad,hi=mx+pad;
   const W=320,H=120,x=i=>(i/(ks.length-1))*(W-12)+6,y=v=>H-8-((v-lo)/(hi-lo))*(H-16);
   const pts=vs.map((v,i)=>x(i).toFixed(1)+","+y(v).toFixed(1));
   const area="M"+pts[0]+" L"+pts.join(" L")+" L"+x(vs.length-1).toFixed(1)+","+H+" L"+x(0).toFixed(1)+","+H+" Z";
-  return'<svg class="chart" viewBox="0 0 '+W+" "+(H+18)+'"><defs><linearGradient id="gw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9f0a" stop-opacity=".35"/><stop offset="1" stop-color="#ff9f0a" stop-opacity="0"/></linearGradient></defs>'+
-    '<path d="'+area+'" fill="url(#gw)"/><polyline points="'+pts.join(" ")+'" fill="none" stroke="#ff9f0a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+
-    '<circle cx="'+x(vs.length-1)+'" cy="'+y(vs[vs.length-1])+'" r="5" fill="#ff9f0a" stroke="#1c1c1e" stroke-width="2.5"/>'+
+  return'<svg class="chart" viewBox="0 0 '+W+" "+(H+18)+'"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".35"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>'+
+    '<path d="'+area+'" fill="url(#'+gid+')"/><polyline points="'+pts.join(" ")+'" fill="none" stroke="'+col+'" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+
+    '<circle cx="'+x(vs.length-1)+'" cy="'+y(vs[vs.length-1])+'" r="5" fill="'+col+'" stroke="#1c1c1e" stroke-width="2.5"/>'+
     '<text x="6" y="'+(H+15)+'" fill="rgba(235,235,245,.35)" font-size="11">'+dm(ks[0])+'</text><text x="'+(W-6)+'" y="'+(H+15)+'" fill="rgba(235,235,245,.35)" font-size="11" text-anchor="end">'+dm(ks[ks.length-1])+"</text></svg>";
 }
 function vProgreso(){
@@ -942,7 +1087,12 @@ function vProgreso(){
   const dlt=ks.length>1?bw[ks[ks.length-1]]-bw[ks[0]]:null;
   h+='<div class="card"><div class="krow"><div><div style="font-size:13px;font-weight:600;color:var(--orange)">Peso corporal</div><div class="wbig" style="margin-top:6px">'+fmt1(act)+"<span>kg</span></div>"+
      '<div class="ksub" style="color:'+(dlt===null?"var(--tx2)":dlt<=0?"var(--green)":"var(--orange)")+'">'+(dlt===null?(ks.length?"Registrado el "+dm(ks[0]):"Último dato: abril, 92 kg"):(dlt<=0?"−":"+")+fmt1(Math.abs(dlt))+" kg desde el "+dm(ks[0]))+'</div></div>'+
-     '<button class="pill" style="--c:var(--orange);font-size:14px" onclick="registrarPeso()"><i></i>Pesarme</button></div>'+graficoPeso()+"</div>";
+     '<button class="pill" style="--c:var(--orange);font-size:14px" onclick="registrarPeso()"><i></i>Pesarme</button></div>'+grafico(bw,"#ff9f0a","gw","Pésate en ayunas, al levantarte, una vez por semana.")+"</div>";
+  // cintura: baja aunque la báscula no se mueva, por eso va al lado del peso
+  const ci=DB.get(K.cin,{}),cks=Object.keys(ci).sort(),cdl=cks.length>1?ci[cks[cks.length-1]]-ci[cks[0]]:null;
+  h+='<div class="card"><div class="krow"><div><div style="font-size:13px;font-weight:600;color:var(--cyan)">Cintura</div><div class="wbig" style="margin-top:6px">'+(cks.length?fmt1(ci[cks[cks.length-1]]):"—")+"<span>cm</span></div>"+
+     '<div class="ksub" style="color:'+(cdl===null?"var(--tx2)":cdl<=0?"var(--green)":"var(--orange)")+'">'+(cdl===null?(cks.length?"Medida el "+dm(cks[0]):"Sin medir todavía"):(cdl<=0?"−":"+")+fmt1(Math.abs(cdl))+" cm desde el "+dm(cks[0]))+'</div></div>'+
+     '<button class="pill" style="--c:var(--cyan);font-size:14px" onclick="medirCintura()"><i></i>Medirme</button></div>'+grafico(ci,"#64d2ff","gc","Mídete una vez por semana, el mismo día que te pesas.")+"</div>";
   // constancia 8 semanas
   const lun=lunesDe(hoy()),sem=[];
   for(let w=7;w>=0;w--){const l=addD(lun,-7*w);let n=0;for(let d=0;d<7;d++)if(entrenoEn(addD(l,d)))n++;sem.push({l,n})}
@@ -955,7 +1105,7 @@ function vProgreso(){
   for(const f of Object.keys(S))for(const e of S[f].ej){if(!e.hechas.length||!e.peso)continue;const m=String(e.peso).match(/(\d+(?:[.,]\d+)?)/);if(!m)continue;
     const v=parseFloat(m[1].replace(",","."));if(!best[e.n]||v>best[e.n].v||(v===best[e.n].v&&f>best[e.n].f))best[e.n]={v,p:e.peso,f}}
   const rec=Object.entries(best).sort((a,b)=>b[1].f.localeCompare(a[1].f)).slice(0,10);
-  h+='<div class="sec">Mejores pesos</div>'+(rec.length?'<div class="list flat">'+rec.map(([n,b])=>'<div class="row"><div class="tx"><b>'+esc(n)+"</b><small>"+dm(b.f)+'</small></div><div class="val" style="color:var(--tx);font-weight:700">'+esc(b.p)+"</div></div>").join("")+"</div>":'<div class="card empty">Aparecen cuando marques series en Entreno.</div>');
+  h+='<div class="sec">Mejores pesos</div>'+(rec.length?'<div class="list flat">'+rec.map(([n,b])=>'<div class="row"><div class="tx"><b>'+esc(n)+"</b><small>"+dm(b.f)+'</small></div><div class="val" style="color:var(--tx);font-weight:700">'+esc(normPeso(b.p))+"</div></div>").join("")+"</div>":'<div class="card empty">Aparecen cuando marques series en Entreno.</div>');
   // historial
   const fs=Object.keys(S).sort().reverse().slice(0,20);
   h+='<div class="sec">Sesiones<small>'+Object.keys(S).length+" en total</small></div>"+(fs.length?'<div class="list flat">'+fs.map(f=>{const s=S[f],r=RUTINA[s.dia],tot=r?seriesTot(r):0,hec=hechasSes(s),pct=tot?Math.round(hec/tot*100):0;
@@ -969,12 +1119,21 @@ function vProgreso(){
 }
 function registrarPeso(){
   hoja('<h2>Peso de hoy</h2><p class="p">En ayunas, al levantarte, después del baño. Una vez por semana basta: el peso diario sube y baja por agua.</p>'+
-    '<input id="wIn" class="bigin" type="number" inputmode="decimal" step="0.1" value="'+pesoActual()+'">'+
+    '<input id="wIn" class="bigin" type="text" inputmode="decimal" value="'+fmtN(pesoActual())+'">'+
     '<button class="btn pri" onclick="guardarPesoCorp()">Guardar</button><button class="btn s2" onclick="cerrar()">Cancelar</button>');
-  setTimeout(()=>{const x=$("#wIn");x.focus();x.select()},350);
+  setTimeout(()=>{const x=$("#wIn");if(x){x.focus();x.select()}},350);
 }
 function guardarPesoCorp(){const v=parseFloat(($("#wIn").value||"").replace(",","."));if(!(v>30&&v<300)){toast("Ese peso no cuadra");return}
   const B=DB.get(K.bw,{});B[hoy()]=r1(v);DB.set(K.bw,B);cerrar();render();toast("Peso guardado · la meta de calorías se ajustó")}
+function medirCintura(){
+  const ci=DB.get(K.cin,{}),ks=Object.keys(ci).sort();
+  hoja('<h2>Cintura</h2><p class="p">Cinta métrica a la altura del ombligo, sin apretar, al final de una exhalación normal. De pie y relajado, sin meter la barriga. Una vez por semana.</p>'+
+    '<input id="cIn" class="bigin" type="text" inputmode="decimal" value="'+(ks.length?fmtN(ci[ks[ks.length-1]]):"")+'" placeholder="cm">'+
+    '<button class="btn pri" onclick="guardarCintura()">Guardar</button><button class="btn s2" onclick="cerrar()">Cancelar</button>');
+  setTimeout(()=>{const x=$("#cIn");if(x){x.focus();x.select()}},350);
+}
+function guardarCintura(){const v=parseFloat(($("#cIn").value||"").replace(",","."));if(!(v>40&&v<200)){toast("Esa medida no cuadra");return}
+  const C=DB.get(K.cin,{});C[hoy()]=r1(v);DB.set(K.cin,C);cerrar();render();toast("Cintura guardada")}
 function ajustes(){
   const c=cfg(),opA=[[1.2,"Sedentario"],[1.375,"Ligera"],[1.45,"Gym 4–5 días + escritorio"],[1.55,"Moderada"],[1.725,"Alta"]],
         opD=[[0,"Mantener peso"],[.1,"Suave · −10%"],[.15,"Moderado · −15%"],[.2,"Recomendado · −20%"],[.25,"Agresivo · −25%"]];
@@ -1014,7 +1173,7 @@ function respaldo(){
     '<div class="sec" style="margin-top:18px">Restaurar</div><textarea id="rTxt" class="ta" placeholder="Pega aquí un respaldo"></textarea>'+
     '<button class="btn" id="rBtn" onclick="restaurar()">Restaurar</button><button class="btn s2" onclick="cerrar()">Cerrar</button>');
 }
-function copiarRespaldo(){const d={};for(const k of Object.values(K))d[k]=DB.get(k,null);copiar(JSON.stringify({app:"gym",v:2,fecha:hoy(),datos:d}),"Respaldo copiado")}
+function copiarRespaldo(){const d={};for(const k of Object.values(K))d[k]=DB.get(k,null);copiar(JSON.stringify({app:"gym",v:3,fecha:hoy(),datos:d}),"Respaldo copiado")}
 let RCONF=false;
 function restaurar(){
   let j;try{j=JSON.parse($("#rTxt").value)}catch(e){toast("Eso no es un respaldo válido");return}
