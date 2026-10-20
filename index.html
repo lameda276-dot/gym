@@ -364,7 +364,7 @@ const RUTINA={
   {n:"Pushdown (barra)",s:3,r:"12",p:"15 kg",d:60,c:"Es tríceps. Codos pegados a las costillas y quietos todo el recorrido. Baja hasta bloquear y aprieta un segundo. Si los codos se abren o el cuerpo se inclina, sobra peso."},
   {n:"Elevaciones laterales",s:3,r:"15",p:"4 kg c/u",d:45,c:"Codos suaves, sube solo hasta la altura de los hombros. Meñique un poco más alto que el pulgar. Baja en 2 segundos. Si balanceas el cuerpo, sobra peso: es de repeticiones, no de kilos."}]},
  2:{t:"Pull A · espalda",min:45,e:[
-  {n:"Remo con apoyo de pecho",s:4,r:"10",p:"20 kg",d:90,c:"Pecho pegado al pad todo el tiempo. Tira con los codos, no con las manos, y llévalos pegados al cuerpo. Aprieta las escápulas un segundo atrás y suelta despacio."},
+  {n:"Remo de pie iso-lateral (discos)",s:4,r:"10",p:"10 kg/lado",d:90,c:"Pecho apoyado en el pad todo el tiempo, pies firmes en las plataformas. Agarre horizontal, codos abiertos: tira hasta que las manos lleguen al costado del pecho y aprieta las escápulas un segundo. Cada brazo va por su cuenta, que el débil no se quede atrás."},
   {n:"Jalón al pecho, agarre ancho",s:3,r:"10",p:"5 placas",d:90,c:"Pecho arriba y hombros abajo antes de tirar. Codos hacia los bolsillos. La barra llega a la clavícula. Si te vas hacia atrás más de 15°, sobra peso."},
   {n:"Reverse fly (máquina)",s:3,r:"15",p:"3 placas",d:45,c:"Pecho al pad, agarres a la altura de los hombros. Abre con los codos un poco doblados hasta la línea del cuerpo. Ligero y controlado: es lo que equilibra tanto press."},
   {n:"Curl de bíceps (mancuernas)",s:3,r:"10",p:"5 kg c/u",d:60,c:"Codos pegados a las costillas y quietos. Sube con el bíceps y baja en 2 segundos. Si el codo se va adelante o te balanceas, sobra peso."},
@@ -671,7 +671,7 @@ function rutinaDe(dia,f){
   return Object.assign({},r,{e:r.e.map((x,i)=>{
     const kf=dia+":"+i,kh=f+":"+kf;let n=C.hoy[kh]||C.fijo[kf]||x.n;
     const se=s&&s.dia===dia&&s.ej[i];
-    if(f<hoy()&&se&&se.hechas.length)n=se.n; // días pasados: lo que de verdad hizo
+    if(f<=hoy()&&se&&se.hechas.length)n=se.n; // con series marcadas manda lo que de verdad hizo, aunque la rutina haya cambiado después
     if(n===x.n)return Object.assign({},x,{o:x.n});
     const F=fichaDe(n)||{n,c:""},enRut=Object.values(RUTINA).flatMap(d=>d.e).find(y=>y.n===n);
     return Object.assign({},x,{n,c:F.c||"",p:F.p||(enRut?enRut.p:""),o:x.n,cam:C.hoy[kh]===n?"hoy":"fijo"});
