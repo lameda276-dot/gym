@@ -196,6 +196,8 @@ h1.lt{font-size:34px;font-weight:800;letter-spacing:-.022em;line-height:1.08;mar
 
 /* ───── arsenal y cambios ───── */
 .camb{display:inline-block;margin-top:4px;font-size:12.5px;font-weight:600;color:var(--purple)}
+.btn.add{color:var(--orange);margin-bottom:10px}
+.btn.add svg{width:18px;height:18px}
 .srch{width:100%;background:var(--s2);border:0;outline:0;border-radius:12px;padding:11px 14px;font-size:16px;color:var(--tx);margin-bottom:10px}
 .gch{display:flex;gap:7px;overflow-x:auto;margin:0 -18px 12px;padding:0 18px;scrollbar-width:none}
 .gch::-webkit-scrollbar{display:none}
@@ -658,17 +660,19 @@ function setPeso(n,v){const P=DB.get(K.pes,{});v=String(v).trim();if(v)P[n]=v;el
 /* ═══════════════ arsenal y cambios de ejercicio ═══════════════
    ARSENAL (arsenal.js) = ejercicios.md con sus cues + catálogo de free-exercise-db (cat:1).
    Un cambio reemplaza el ejercicio de un hueco (día:posición) y conserva series, reps y descanso.
-   gym.cambios = {fijo:{"1:2":nombre}, hoy:{"2026-10-06:1:2":nombre}} */
+   gym.cambios = {fijo:{"1:2":nombre}, hoy:{"2026-10-06:1:2":nombre},
+                  extra:{fijo:{"5":[{n,s,r,d}]}, hoy:{"2026-10-23:5":[{n,s,r,d}]}}}
+   Los agregados van después de los de la rutina: primero los fijos del día, luego los de esa fecha. */
 const GRUPOS=["Espalda","Pecho","Hombro","Bíceps","Tríceps","Cuádriceps","Isquio y glúteo","Gemelo","Core"];
 const NIV=[["x","Lo sé hacer"],["/","Sin dominar"],[" ","Por aprender"],["c","Catálogo"]];
 const arsenal=()=>ARSENAL.concat(DB.get(K.ejc,[]));
 const fichaDe=n=>arsenal().find(x=>x.n===n);
 const nivelDe=F=>{const v=DB.get(K.niv,{})[F.n];return v!=null?v:F.cat?"c":F.lv};
-const cambios=()=>{const C=DB.get(K.cam,{});C.fijo=C.fijo||{};C.hoy=C.hoy||{};return C};
+const cambios=()=>{const C=DB.get(K.cam,{});C.fijo=C.fijo||{};C.hoy=C.hoy||{};const X=C.extra=C.extra||{};X.fijo=X.fijo||{};X.hoy=X.hoy||{};return C};
 function rutinaDe(dia,f){
   const r=RUTINA[dia];if(!r)return null;
   const C=cambios(),s=DB.get(K.ses,{})[f];
-  return Object.assign({},r,{e:r.e.map((x,i)=>{
+  const out=Object.assign({},r,{e:r.e.map((x,i)=>{
     const kf=dia+":"+i,kh=f+":"+kf;let n=C.hoy[kh]||C.fijo[kf]||x.n;
     const se=s&&s.dia===dia&&s.ej[i];
     if(f<=hoy()&&se&&se.hechas.length)n=se.n; // con series marcadas manda lo que de verdad hizo, aunque la rutina haya cambiado después
@@ -676,6 +680,20 @@ function rutinaDe(dia,f){
     const F=fichaDe(n)||{n,c:""},enRut=Object.values(RUTINA).flatMap(d=>d.e).find(y=>y.n===n);
     return Object.assign({},x,{n,c:F.c||"",p:F.p||(enRut?enRut.p:""),o:x.n,cam:C.hoy[kh]===n?"hoy":"fijo"});
   })});
+  // agregados: fijos del día y luego los de esa fecha
+  const X=C.extra,base=out.e.length,
+    ex=(X.fijo[dia]||[]).map((y,j)=>Object.assign({},y,{x:"fijo",xj:j})).concat((X.hoy[f+":"+dia]||[]).map((y,j)=>Object.assign({},y,{x:"hoy",xj:j})));
+  out.e=out.e.concat(ex.map(y=>Object.assign({c:"",p:""},datosEj(y.n),y,{o:y.n})));
+  // con series marcadas manda la sesión: si se quitó un agregado, lo hecho se sigue viendo
+  const ses=s&&s.dia===dia&&f<=hoy()?s.ej:[],deSes=se=>Object.assign({c:"",p:""},datosEj(se.n),{n:se.n,o:se.n,s:se.meta||se.hechas.length,r:se.r||"10",d:60,x:"ses"});
+  for(let i=base;i<out.e.length;i++){const se=ses[i];if(se&&se.hechas.length&&se.n!==out.e[i].n)out.e[i]=deSes(se)}
+  const ult=ses.map(se=>se.hechas.length>0).lastIndexOf(true);
+  for(let i=out.e.length;i<=ult;i++)out.e.push(deSes(ses[i]));
+  return out;
+}
+function datosEj(n){
+  const F=fichaDe(n),enRut=Object.values(RUTINA).flatMap(d=>d.e).find(y=>y.n===n);
+  return{c:F&&F.c||enRut&&enRut.c||"",p:F&&F.p||enRut&&enRut.p||""};
 }
 const R=()=>rutinaDe(entD,entF);
 const seriesTot=r=>r.e.reduce((a,x)=>a+x.s,0);
@@ -685,7 +703,7 @@ function marcar(f,dia,i,k){
   const S=DB.get(K.ses,{}),r=rutinaDe(dia,f);let s=S[f];
   if(!s||s.dia!==dia)s=S[f]={dia,t:r.t,ej:r.e.map(x=>({n:x.n,hechas:[],peso:null}))};
   while(s.ej.length<r.e.length)s.ej.push({n:r.e[s.ej.length].n,hechas:[],peso:null});
-  const e=s.ej[i];if(e.n!==r.e[i].n){e.n=r.e[i].n;e.hechas=[]}e.meta=r.e[i].s;
+  const e=s.ej[i];if(e.n!==r.e[i].n){e.n=r.e[i].n;e.hechas=[]}e.meta=r.e[i].s;e.r=r.e[i].r;
   const on=!e.hechas.includes(k);
   e.hechas=on?e.hechas.concat(k).sort((a,b)=>a-b):e.hechas.filter(x=>x!==k);
   e.peso=pesoDe(r.e[i]);
@@ -932,13 +950,14 @@ function vEntreno(){
     const sb=!futuro&&!hs.length?tocaSubir(ej,entF):null;
     const sets=Array.from({length:ej.s},(_,k)=>{const on=hs.includes(k);
       return'<button class="set'+(on?" on":"")+'" id="s'+i+"_"+k+'" onclick="serie('+i+","+k+')"'+(futuro?" disabled":"")+">"+(on?IC.check:"<span>"+(k+1)+"</span>")+"<small>"+esc(ej.r)+(/s$/.test(ej.r)?"":" reps")+"</small></button>"}).join("");
-    return'<div class="ex'+(done?" done":"")+'"><div class="exh"><div class="badge">'+(done?IC.check:i+1)+'</div><div class="exn"><b>'+esc(ej.n)+"</b><small>"+ej.s+" × "+esc(ej.r)+" · descanso "+ej.d+" s</small>"+(ej.cam?'<span class="camb">'+(ej.cam==="hoy"?"Solo hoy":"Cambiado")+" · en vez de "+esc(ej.o)+"</span>":"")+'</div><button class="ib" onclick="cambiar('+i+')">'+IC.cambio+'</button><button class="ib" onclick="tecnica('+i+')">'+IC.info+"</button></div>"+
+    return'<div class="ex'+(done?" done":"")+'"><div class="exh"><div class="badge">'+(done?IC.check:i+1)+'</div><div class="exn"><b>'+esc(ej.n)+"</b><small>"+ej.s+" × "+esc(ej.r)+" · descanso "+ej.d+" s</small>"+(ej.cam?'<span class="camb">'+(ej.cam==="hoy"?"Solo hoy":"Cambiado")+" · en vez de "+esc(ej.o)+"</span>":"")+(ej.x?'<span class="camb">'+(ej.x==="hoy"?"Agregado · solo este día":ej.x==="fijo"?"Agregado · todos los "+DIA[entD].toLowerCase():"Registrado")+"</span>":"")+'</div>'+(ej.x?(ej.x==="ses"?"":'<button class="ib" onclick="quitarEx('+i+')">'+IC.x+"</button>"):'<button class="ib" onclick="cambiar('+i+')">'+IC.cambio+"</button>")+'<button class="ib" onclick="tecnica('+i+')">'+IC.info+"</button></div>"+
       (u?'<div class="ult">Última vez · '+dm(u.f)+" · "+esc(normPeso(u.peso)||"—")+" · "+u.h+(u.h===1?" serie":" series")+"</div>":"")+
       (sb?'<div class="sube"><span><b>Toca subir</b> · '+esc(sb)+'</span><button onclick="subir('+i+')">Subir</button></div>':"")+
       '<div class="stp">'+(corp?'<button class="pv solo" onclick="editarPeso('+i+')">Peso corporal</button>':
         '<button class="pm" onclick="pesoPaso('+i+',-1)">'+IC.menos+'</button><button class="pv" onclick="editarPeso('+i+')">'+(pv?esc(pv):'<span style="color:var(--tx2);font-weight:600">Poner peso</span>')+'</button><button class="pm" onclick="pesoPaso('+i+',1)">'+IC.mas+"</button>")+"</div>"+
       '<div class="sets">'+sets+"</div></div>";
   }).join("");
+  h+='<button class="btn s2 add" onclick="agregarEj()">'+IC.mas+"Agregar ejercicio</button>";
   h+='<button class="btn pri" onclick="terminar()"'+(hec?"":" disabled")+">Terminar entreno</button>";
   h+='<div class="hint">El primer ejercicio es sagrado. Si no da el tiempo, recorta por el final.</div>';
   return[h,r.t];
@@ -996,7 +1015,7 @@ function tecnica(i){
 }
 
 /* ═══════════════ CAMBIAR EJERCICIO · ARSENAL ═══════════════ */
-// SW.i = hueco que se cambia (-1 = solo mirar el arsenal) · SW.g = grupo · SW.q = búsqueda
+// SW.i = hueco que se cambia (-1 = solo mirar el arsenal, -2 = agregar) · SW.g = grupo · SW.q = búsqueda · SW.s/SW.r = series y reps al agregar
 let SW=null;
 const miniatura=F=>F.i?'<img loading="lazy" src="ej/t/'+F.i+'.jpg" alt="">':'<div class="ni">'+IC.lista+"</div>";
 function cambiar(i){
@@ -1011,11 +1030,12 @@ function abrirArsenal(){
   if(SW.i>=0){const ej=R().e[SW.i];
     h='<h2>Cambiar '+esc(ej.n)+'</h2><p class="p" style="margin-bottom:10px">Se quedan las '+ej.s+" series de "+esc(ej.r)+" y "+ej.d+" s de descanso.</p>"+
       (ej.cam?'<button class="vol" onclick="aplicar(\''+jsq(ej.o)+'\',\'fijo\')">'+IC.cambio+"Volver a "+esc(ej.o)+"</button>":"");
-  }else h='<h2>Arsenal</h2><p class="p" style="margin-bottom:10px">'+arsenal().length+' ejercicios. Toca uno para ver cómo se hace y marcar si ya lo dominas.</p>';
+  }else if(SW.i===-2)h='<h2>Agregar a '+esc(R().t)+'</h2><p class="p" style="margin-bottom:10px">Elige el ejercicio. Va al final de la sesión.</p>';
+  else h='<h2>Arsenal</h2><p class="p" style="margin-bottom:10px">'+arsenal().length+' ejercicios. Toca uno para ver cómo se hace y marcar si ya lo dominas.</p>';
   h+='<input id="aQ" class="srch" placeholder="Buscar en todos" autocomplete="off" value="'+esc(SW.q)+'">'+
      '<div class="gch" id="aG">'+GRUPOS.map(g=>'<button data-g="'+g+'">'+g+"</button>").join("")+'</div><div id="aL"></div>'+
-     (SW.i<0?'<button class="btn" style="margin-top:14px" onclick="crearEj()">Crear ejercicio</button>':"")+
-     '<button class="btn s2" style="margin-top:'+(SW.i<0?0:14)+'px" onclick="cerrar()">Cerrar</button>';
+     (SW.i===-1?'<button class="btn" style="margin-top:14px" onclick="crearEj()">Crear ejercicio</button>':"")+
+     '<button class="btn s2" style="margin-top:'+(SW.i===-1?0:14)+'px" onclick="cerrar()">Cerrar</button>';
   hoja(h);
   $("#aQ").oninput=e=>{SW.q=e.target.value;pintarArsenal()};
   document.querySelectorAll("#aG button").forEach(b=>b.onclick=()=>{hap();SW.g=b.dataset.g;SW.q="";$("#aQ").value="";pintarArsenal()});
@@ -1033,13 +1053,18 @@ function pintarArsenal(){
 }
 function fichaEj(n){
   const F=fichaDe(n);if(!F)return;hap();
-  const nv=nivelDe(F),cam=SW&&SW.i>=0;
+  const nv=nivelDe(F),cam=SW&&SW.i>=0,add=SW&&SW.i===-2;
   hoja('<h2>'+esc(F.n)+'</h2>'+guiaHTML(F)+(F.c?'<p class="cue">'+esc(F.c)+"</p>":"")+
     '<div class="lh" style="margin-top:0">¿Lo dominas?</div><div class="seg u" id="nS">'+NIV.slice(0,3).map(([k,l])=>'<button data-n="'+k+'" class="'+(nv===k?"on":"")+'">'+l+"</button>").join("")+"</div>"+
     ytHTML(F,F.n)+
     (cam?'<button class="btn pri" onclick="aplicar(\''+jsq(F.n)+'\',\'hoy\')">Solo hoy</button><button class="btn s2" style="color:var(--orange)" onclick="aplicar(\''+jsq(F.n)+'\',\'fijo\')">Desde ahora · todos los '+DIA[entD].toLowerCase()+"</button>":"")+
+    (add?'<div class="lh" style="margin-top:4px">Series</div><div class="seg u" id="xS">'+[2,3,4].map(k=>'<button data-v="'+k+'" class="'+(SW.s===k?"on":"")+'">'+k+"</button>").join("")+"</div>"+
+      '<div class="lh" style="margin-top:0">Reps</div><div class="seg u" id="xR">'+["8","10","12","15"].map(k=>'<button data-v="'+k+'" class="'+(SW.r===k?"on":"")+'">'+k+"</button>").join("")+"</div>"+
+      '<button class="btn pri" onclick="agregarA(\''+jsq(F.n)+'\',\'hoy\')">Solo este día</button><button class="btn s2" style="color:var(--orange)" onclick="agregarA(\''+jsq(F.n)+'\',\'fijo\')">Todos los '+DIA[entD].toLowerCase()+"</button>":"")+
     (F.mio?'<button class="btn dng" onclick="borrarEj(\''+jsq(F.n)+'\')">Borrar ejercicio</button>':"")+
     '<button class="btn s2" onclick="abrirArsenal()">Volver</button>');
+  [["#xS","s",Number],["#xR","r",String]].forEach(([id,k,T])=>document.querySelectorAll(id+" button").forEach(b=>b.onclick=()=>{hap();SW[k]=T(b.dataset.v);
+    document.querySelectorAll(id+" button").forEach(x=>x.classList.toggle("on",x===b))}));
   document.querySelectorAll("#nS button").forEach(b=>b.onclick=()=>{hap();const N=DB.get(K.niv,{});N[F.n]=b.dataset.n;DB.set(K.niv,N);
     document.querySelectorAll("#nS button").forEach(x=>x.classList.toggle("on",x===b))});
   fotoFallo();
@@ -1069,19 +1094,41 @@ function guardarEj(){
   SW.g=$("#eG").value;SW.q="";abrirArsenal();toast("Creado · "+n);
 }
 function borrarEj(n){const C=DB.get(K.ejc,[]).filter(x=>x.n!==n);DB.set(K.ejc,C);abrirArsenal();toast("Borrado")}
+function agregarEj(){
+  hap();const r=R(),ul=r.e[r.e.length-1],F=ul&&fichaDe(ul.n);
+  SW={i:-2,g:F?F.g:"Bíceps",q:"",s:3,r:"12"};abrirArsenal();
+}
+function agregarA(n,modo){
+  const C=cambios(),X=C.extra,k=modo==="hoy"?entF+":"+entD:String(entD),L=modo==="hoy"?X.hoy:X.fijo;
+  const enRut=Object.values(RUTINA).flatMap(d=>d.e).find(y=>y.n===n);
+  (L[k]=L[k]||[]).push({n,s:SW.s,r:SW.r,d:enRut?enRut.d:60});
+  DB.set(K.cam,C);
+  const F=fichaDe(n);if(F&&F.i)[0,1].forEach(j=>fetch(fotoEj(F.i,j)).catch(()=>{}));
+  cerrar();hap();render();
+  toast(modo==="hoy"?"Agregado · "+n:"Agregado todos los "+DIA[entD].toLowerCase()+" · "+n);
+}
+function quitarEx(i){
+  const ej=R().e[i],S=DB.get(K.ses,{}),s=S[entF];
+  if(s&&s.dia===entD&&s.ej[i]&&s.ej[i].n===ej.n&&s.ej[i].hechas.length){toast("Desmarca sus series para quitarlo");return}
+  const C=cambios(),X=C.extra,k=ej.x==="hoy"?entF+":"+entD:String(entD),L=ej.x==="hoy"?X.hoy:X.fijo;
+  if(!L[k])return;L[k].splice(ej.xj,1);if(!L[k].length)delete L[k];DB.set(K.cam,C);
+  if(s&&s.dia===entD&&s.ej.length>i){s.ej.splice(i,1);if(!hechasSes(s))delete S[entF];DB.set(K.ses,S)} // que los de abajo no se corran
+  hap();render();toast("Quitado · "+ej.n);
+}
 function verRutina(){
-  const C=cambios(),fi=Object.entries(C.fijo);
+  const C=cambios(),fi=Object.entries(C.fijo),xa=Object.entries(C.extra.fijo).flatMap(([d,L])=>L.map(y=>[+d,y]));
   hoja('<h2>Tu rutina</h2><p class="p">Los cambios «desde ahora» quedan aquí. El bloque es hasta el 31 de octubre: cambia un ejercicio si la máquina no sirve, no la rutina entera.</p>'+
-    (fi.length?'<div class="pvw">'+fi.map(([k,n])=>{const[d,i]=k.split(":").map(Number);return'<div class="r"><div class="tx"><b>'+esc(n)+"</b><small>"+DIA[d]+" · en vez de "+esc(RUTINA[d].e[i].n)+"</small></div></div>"}).join("")+"</div>":
+    (fi.length||xa.length?'<div class="pvw">'+fi.map(([k,n])=>{const[d,i]=k.split(":").map(Number);return'<div class="r"><div class="tx"><b>'+esc(n)+"</b><small>"+DIA[d]+" · en vez de "+esc(RUTINA[d].e[i].n)+"</small></div></div>"}).join("")+
+      xa.map(([d,y])=>'<div class="r"><div class="tx"><b>'+esc(y.n)+"</b><small>"+DIA[d]+" · agregado · "+y.s+" × "+esc(y.r)+"</small></div></div>").join("")+"</div>":
       '<div class="card empty" style="background:var(--s2)">Sin cambios. Es la rutina original de rutina.md.</div>')+
     '<button class="btn pri" onclick="copiar(mdRutina(),\'Copiado. Pégalo en rutina.md\')">Copiar para Obsidian</button>'+
-    (fi.length?'<button class="btn dng" id="vO" onclick="volverOriginal()">Volver todo al original</button>':"")+
+    (fi.length||xa.length?'<button class="btn dng" id="vO" onclick="volverOriginal()">Volver todo al original</button>':"")+
     '<button class="btn s2" onclick="cerrar()">Cerrar</button>');
 }
 let VCONF=false;
 function volverOriginal(){
   if(!VCONF){VCONF=true;$("#vO").textContent="Toca otra vez para confirmar";setTimeout(()=>{VCONF=false},4000);return}
-  VCONF=false;const C=cambios();C.fijo={};DB.set(K.cam,C);cerrar();render();toast("Rutina original de vuelta");
+  VCONF=false;const C=cambios();C.fijo={};C.extra.fijo={};DB.set(K.cam,C);cerrar();render();toast("Rutina original de vuelta");
 }
 function mdRutina(){
   return[1,2,3,4,5].map(d=>{const r=rutinaDe(d,"9999-12-31");

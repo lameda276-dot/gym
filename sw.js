@@ -1,7 +1,7 @@
 // sw.js — hace que la app abra sin señal (el gym es sótano para el 4G).
 // Estrategia: red primero, cache de respaldo. Así en casa con wifi siempre
 // baja la última versión y en el gym sin datos abre igual la última que vio.
-const CACHE = "gym-v7";
+const CACHE = "gym-v8";
 const ARCHIVOS = ["./", "./index.html", "./arsenal.js", "./manifest.json", "./icon-180.png"];
 
 // Fotos de la guía: caché aparte que sobrevive a las versiones (no cambian).
